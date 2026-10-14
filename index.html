@@ -357,6 +357,58 @@
   }
   .media-slot video { width: 100%; border-radius: 6px; display: block; }
 
+  .gallery { display: flex; flex-direction: column; gap: 10px; }
+  .gallery-frame {
+    position: relative;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 16/10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .gallery-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: #fff;
+  }
+  .gallery-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(17, 21, 27, 0.7);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .gallery-arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .gallery-arrow.prev { left: 10px; }
+  .gallery-arrow.next { right: 10px; }
+  .gallery-dots { display: flex; justify-content: center; gap: 6px; }
+  .gallery-dots button {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    border: none;
+    background: var(--border);
+    cursor: pointer;
+    padding: 0;
+  }
+  .gallery-dots button.active { background: var(--accent); }
+  .gallery-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+
   .trial-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
   .trial-bar {
     display: flex;
@@ -515,7 +567,13 @@
       tags: ["Angular", ".NET / C#", "SQL Server"],
       videoSrc: null,
       demoUrl: null,
-      noLiveDemo: true
+      noLiveDemo: true,
+      screenshots: [
+        "assets/auxilio-1.jpg",
+        "assets/auxilio-2.jpg",
+        "assets/auxilio-3.jpg",
+        "assets/auxilio-4.jpg"
+      ]
     },
     {
       id: "edith",
@@ -581,9 +639,23 @@
     document.getElementById("modal-title").textContent = p.name;
     var body = document.getElementById("modal-body");
 
-    var mediaHtml = p.videoSrc
-      ? '<div class="media-slot"><video src="' + p.videoSrc + '" controls playsinline></video></div>'
-      : '<div class="media-slot">Video de demostración en preparación. Mientras tanto, escribime y te muestro cómo funciona.</div>';
+    var mediaHtml;
+    if (p.screenshots && p.screenshots.length) {
+      mediaHtml =
+        '<div class="gallery" id="gallery">' +
+          '<div class="gallery-frame">' +
+            '<img id="gallery-img" src="' + p.screenshots[0] + '" alt="Captura de ' + p.name + '">' +
+            '<button class="gallery-arrow prev" id="gallery-prev" type="button" aria-label="Anterior">‹</button>' +
+            '<button class="gallery-arrow next" id="gallery-next" type="button" aria-label="Siguiente">›</button>' +
+          "</div>" +
+          '<div class="gallery-dots" id="gallery-dots"></div>' +
+          '<p class="gallery-note">Capturas con datos de prueba cargados por mí, no son clientes reales.</p>' +
+        "</div>";
+    } else if (p.videoSrc) {
+      mediaHtml = '<div class="media-slot"><video src="' + p.videoSrc + '" controls playsinline></video></div>';
+    } else {
+      mediaHtml = '<div class="media-slot">Video de demostración en preparación. Mientras tanto, escribime y te muestro cómo funciona.</div>';
+    }
 
     var trialHtml = p.noLiveDemo
       ? (
@@ -607,6 +679,28 @@
         );
 
     body.innerHTML = mediaHtml + trialHtml;
+
+    if (p.screenshots && p.screenshots.length) {
+      var idx = 0;
+      var imgEl = document.getElementById("gallery-img");
+      var dotsEl = document.getElementById("gallery-dots");
+      dotsEl.innerHTML = p.screenshots.map(function (_, i) {
+        return '<button data-i="' + i + '" class="' + (i === 0 ? "active" : "") + '" aria-label="Captura ' + (i + 1) + '"></button>';
+      }).join("");
+
+      function show(i) {
+        idx = (i + p.screenshots.length) % p.screenshots.length;
+        imgEl.src = p.screenshots[idx];
+        dotsEl.querySelectorAll("button").forEach(function (b, bi) {
+          b.classList.toggle("active", bi === idx);
+        });
+      }
+      document.getElementById("gallery-prev").addEventListener("click", function () { show(idx - 1); });
+      document.getElementById("gallery-next").addEventListener("click", function () { show(idx + 1); });
+      dotsEl.querySelectorAll("button").forEach(function (b) {
+        b.addEventListener("click", function () { show(parseInt(this.getAttribute("data-i"), 10)); });
+      });
+    }
 
     if (p.demoUrl) {
       document.getElementById("start-trial").addEventListener("click", function () {
