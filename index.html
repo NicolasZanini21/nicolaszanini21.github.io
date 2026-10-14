@@ -2,98 +2,171 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  /* Layout: single-column terminal-panel portfolio — hero, stack tags,
-     project cards with a demo modal (video + time-boxed live trial),
-     and an icon row for contact */
+  /*
+    Layout concept: "plano de obra" — a blueprint/ledger reading. Paper-blue
+    light surface ruled like drafting paper, projects laid out as numbered
+    sheets (01, 02, 03) in a real sequence, serif display for the title
+    block, grotesk for running text, mono for every technical label and
+    coordinate-style metadata — the vocabulary of a technical drawing.
+  */
   :root {
-    --bg: #11151b;
-    --surface: #171c24;
-    --surface-2: #1d2330;
-    --fg: #e8ecf1;
-    --muted: #8a94a6;
-    --accent: #d9914a;
-    --border: #2a3140;
-    --good: #5fae76;
-    --bad: #d9705c;
+    --paper: #eef1ef;
+    --panel: #ffffff;
+    --ink: #1c2b3a;
+    --muted: #5d7079;
+    --line: #c7d2cf;
+    --cobalt: #2c5f8a;
+    --cobalt-soft: #e4ecf1;
+    --good: #3f7a5c;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #13191d;
+      --panel: #1a2227;
+      --ink: #e9eef0;
+      --muted: #8fa0a6;
+      --line: #2c383d;
+      --cobalt: #7fb3d9;
+      --cobalt-soft: #223038;
+      --good: #6cb493;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #13191d;
+    --panel: #1a2227;
+    --ink: #e9eef0;
+    --muted: #8fa0a6;
+    --line: #2c383d;
+    --cobalt: #7fb3d9;
+    --cobalt-soft: #223038;
+    --good: #6cb493;
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
 
   body {
-    background: var(--bg);
-    color: var(--fg);
+    background: var(--paper);
+    background-image:
+      repeating-linear-gradient(0deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 28px),
+      repeating-linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 28px);
+    color: var(--ink);
     margin: 0;
-    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-family: "Archivo", system-ui, -apple-system, sans-serif;
     font-size: 16px;
     line-height: 1.6;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
   }
 
-  h1, h2, h3 { text-wrap: balance; font-family: "IBM Plex Sans", sans-serif; margin: 0; }
-  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; font-family: "Fraunces", Georgia, serif; }
+  .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
   a { color: inherit; }
   button { font-family: inherit; }
 
   .wrap {
-    max-width: 760px;
+    max-width: 780px;
     margin: 0 auto;
-    padding-block: 64px 48px;
+    padding-block: 56px 48px;
     display: flex;
     flex-direction: column;
-    gap: 56px;
+    gap: 52px;
   }
 
   @keyframes rise {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .wrap > * {
-    animation: rise .6s cubic-bezier(.2,.7,.3,1) both;
-  }
+  .wrap > * { animation: rise .55s cubic-bezier(.2,.7,.3,1) both; }
   .wrap > *:nth-child(1) { animation-delay: .02s; }
-  .wrap > *:nth-child(2) { animation-delay: .12s; }
-  .wrap > *:nth-child(3) { animation-delay: .22s; }
-  .wrap > *:nth-child(4) { animation-delay: .32s; }
+  .wrap > *:nth-child(2) { animation-delay: .1s; }
+  .wrap > *:nth-child(3) { animation-delay: .18s; }
+  .wrap > *:nth-child(4) { animation-delay: .26s; }
+  @media (prefers-reduced-motion: reduce) { .wrap > * { animation: none; } }
+
+  /* ---- Scroll reveal ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity .7s cubic-bezier(.2,.7,.3,1), transform .7s cubic-bezier(.2,.7,.3,1);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
   @media (prefers-reduced-motion: reduce) {
-    .wrap > * { animation: none; }
+    .reveal { opacity: 1; transform: none; transition: none; }
   }
 
-  .project {
-    transition: transform .18s ease, border-color .18s ease;
+  /* ---- Eyebrow rule draws in ---- */
+  .eyebrow::after {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .9s cubic-bezier(.2,.7,.3,1);
   }
-  .project:hover {
-    transform: translateY(-3px);
-    border-color: var(--accent-soft, var(--border));
-  }
-  .tag, .project-tags span {
-    transition: border-color .15s ease, color .15s ease;
-  }
-  .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .reveal.is-visible .eyebrow::after { transform: scaleX(1); }
+  @media (prefers-reduced-motion: reduce) { .eyebrow::after { transform: none; } }
 
-  /* ---- Hero ---- */
-  .hero { display: flex; flex-direction: column; gap: 18px; }
+  /* ---- Title block sheen sweep on load ---- */
+  @keyframes sheen {
+    0% { transform: translateX(-120%) skewX(-12deg); }
+    100% { transform: translateX(220%) skewX(-12deg); }
+  }
+  .titleblock { overflow: hidden; }
+  .titleblock::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--cobalt) 16%, transparent), transparent);
+    animation: sheen 1.4s ease-out .5s both;
+    pointer-events: none;
+  }
+  @media (prefers-reduced-motion: reduce) { .titleblock::after { display: none; } }
+
+  /* ---- Role line underline draw ---- */
+  .role-line { position: relative; display: inline-block; padding-bottom: 4px; }
+  .role-line::after {
+    content: "";
+    position: absolute;
+    left: 0; bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--cobalt);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: drawline .8s cubic-bezier(.2,.7,.3,1) 1s both;
+  }
+  @keyframes drawline { to { transform: scaleX(1); } }
+  @media (prefers-reduced-motion: reduce) { .role-line::after { animation: none; transform: scaleX(1); } }
+
+  /* ---- Title block ---- */
+  .titleblock {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 28px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+  }
 
   .status {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     width: fit-content;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.02em;
     color: var(--good);
-    background: color-mix(in srgb, var(--good) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
-    border-radius: 999px;
-    padding: 5px 12px 5px 10px;
+    border: 1px solid color-mix(in srgb, var(--good) 45%, transparent);
+    padding: 5px 11px 5px 9px;
   }
   .status::before {
     content: "";
     width: 7px; height: 7px;
-    border-radius: 50%;
     background: var(--good);
     animation: pulse 2.2s ease-out infinite;
   }
@@ -104,68 +177,76 @@
   }
   @media (prefers-reduced-motion: reduce) { .status::before { animation: none; } }
 
-  .hero h1 {
-    font-size: clamp(2rem, 5vw, 2.75rem);
-    font-weight: 700;
+  .titleblock h1 {
+    font-size: clamp(2.1rem, 5.6vw, 3rem);
+    font-weight: 500;
+    font-style: normal;
     letter-spacing: -0.01em;
   }
 
   .role-line {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
-    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--cobalt);
   }
 
   .bio {
     color: var(--muted);
-    max-width: 64ch;
+    max-width: 66ch;
     font-size: 1rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
   }
-  .bio strong { color: var(--fg); font-weight: 600; }
+  .bio strong { color: var(--ink); font-weight: 600; }
 
   /* ---- Section shell ---- */
-  section { display: flex; flex-direction: column; gap: 20px; }
+  section { display: flex; flex-direction: column; gap: 18px; }
 
   .eyebrow {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12.5px;
-    letter-spacing: 0.06em;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--muted);
     display: flex;
     align-items: center;
     gap: 10px;
   }
-  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
   /* ---- Stack ---- */
-  .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .stack-grid { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
   .tag {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: var(--fg);
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 6px 11px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    color: var(--ink);
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    padding: 7px 12px;
+    transition: background .2s ease, color .2s ease;
   }
+  .tag:hover { background: var(--cobalt); color: var(--panel); }
 
-  /* ---- Projects ---- */
-  .projects { display: flex; flex-direction: column; gap: 16px; }
+  /* ---- Projects as sheets ---- */
+  .projects { display: flex; flex-direction: column; gap: 14px; }
 
   .project {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
     display: flex;
     flex-direction: column;
     gap: 14px;
+    position: relative;
+    transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
-
+  .project:hover, .project:focus-within {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--cobalt) 55%, var(--line));
+    box-shadow: 0 14px 28px -18px color-mix(in srgb, var(--cobalt) 45%, transparent);
+  }
   .project-head {
     display: flex;
     justify-content: space-between;
@@ -173,38 +254,40 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  .project-head h3 { font-size: 1.15rem; font-weight: 600; min-width: 0; }
+  .project-head h3 { font-size: 1.25rem; font-weight: 500; min-width: 0; }
 
   .badge {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11.5px;
-    letter-spacing: 0.03em;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11px;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
-    border-radius: 999px;
-    padding: 4px 10px;
+    padding: 4px 9px;
     white-space: nowrap;
     flex-shrink: 0;
+    border: 1px solid;
   }
-  .badge.live {
-    color: var(--good);
-    background: color-mix(in srgb, var(--good) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+  .badge.live { color: var(--good); border-color: color-mix(in srgb, var(--good) 45%, transparent); }
+  .badge.dev { color: var(--cobalt); border-color: color-mix(in srgb, var(--cobalt) 45%, transparent); }
+  .badge.live::before {
+    content: "";
+    display: inline-block;
+    width: 5px; height: 5px;
+    margin-right: 6px;
+    border-radius: 50%;
+    background: var(--good);
+    vertical-align: middle;
+    animation: pulse 2.2s ease-out infinite;
   }
-  .badge.dev {
-    color: var(--accent);
-    background: color-mix(in srgb, var(--accent) 14%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
-  }
+  @media (prefers-reduced-motion: reduce) { .badge.live::before { animation: none; } }
 
-  .project p { color: var(--muted); margin: 0; min-width: 0; }
+  .project p.desc { color: var(--muted); margin: 0; min-width: 0; }
 
   .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
   .project-tags span {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
     color: var(--muted);
-    border: 1px solid var(--border);
-    border-radius: 5px;
+    border: 1px solid var(--line);
     padding: 3px 8px;
   }
 
@@ -216,34 +299,31 @@
   }
 
   .demo-btn {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: var(--bg);
-    background: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    color: var(--panel);
+    background: var(--cobalt);
     border: none;
-    border-radius: 6px;
     padding: 9px 14px;
     cursor: pointer;
     transition: opacity .15s ease;
+    display: inline-block;
+    text-decoration: none;
   }
-  .demo-btn:hover { opacity: .85; }
-  .demo-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+  .demo-btn:hover { opacity: .82; }
+  .demo-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .project-link {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    color: var(--cobalt);
     text-decoration: none;
     width: fit-content;
   }
   .project-link:hover { text-decoration: underline; }
 
   /* ---- Contact icon row ---- */
-  .contact-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 14px;
-  }
+  .contact-row { display: flex; flex-wrap: wrap; gap: 14px; }
   .icon-btn {
     display: flex;
     flex-direction: column;
@@ -258,45 +338,36 @@
     width: 76px;
   }
   .icon-btn .circle {
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: var(--surface);
-    border: 1px solid var(--border);
+    width: 50px;
+    height: 50px;
+    background: var(--panel);
+    border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color .15s ease, color .15s ease, background .15s ease;
-    color: var(--fg);
+    transition: border-color .15s ease, color .15s ease;
+    color: var(--ink);
   }
-  .icon-btn .circle svg { width: 22px; height: 22px; }
-  .icon-btn:hover .circle, .icon-btn:focus-visible .circle {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .icon-btn .circle svg { width: 21px; height: 21px; }
+  .icon-btn:hover .circle, .icon-btn:focus-visible .circle { border-color: var(--cobalt); color: var(--cobalt); }
   .icon-btn:focus-visible { outline: none; }
-  .icon-btn:focus-visible .circle { outline: 2px solid var(--accent); outline-offset: 2px; }
-  .icon-btn .caption {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 11px;
-    text-align: center;
-    line-height: 1.3;
-  }
+  .icon-btn:focus-visible .circle { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .icon-btn .caption { font-family: "JetBrains Mono", monospace; font-size: 10.5px; text-align: center; line-height: 1.3; }
 
   footer {
     color: var(--muted);
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px;
     text-align: center;
     padding-top: 12px;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--line);
   }
 
   /* ---- Modal ---- */
   .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(8, 10, 14, 0.72);
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -304,13 +375,15 @@
     padding-top: max(20px, env(safe-area-inset-top, 0px));
     padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
     z-index: 100;
+    opacity: 0;
+    transition: opacity .25s ease;
   }
   .modal-backdrop[hidden] { display: none; }
+  .modal-backdrop.is-open { opacity: 1; }
 
   .modal {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    background: var(--panel);
+    border: 1px solid var(--line);
     max-width: 560px;
     width: 100%;
     max-height: 85vh;
@@ -319,20 +392,20 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    transform: translateY(14px) scale(.97);
+    transition: transform .3s cubic-bezier(.2,.7,.3,1);
+  }
+  .modal-backdrop.is-open .modal { transform: translateY(0) scale(1); }
+  @media (prefers-reduced-motion: reduce) {
+    .modal-backdrop, .modal { transition: none; }
   }
 
-  .modal-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-  }
-  .modal-head h3 { font-size: 1.2rem; min-width: 0; }
+  .modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+  .modal-head h3 { font-size: 1.25rem; min-width: 0; font-weight: 500; }
   .modal-close {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
+    background: var(--paper);
+    border: 1px solid var(--line);
     color: var(--muted);
-    border-radius: 6px;
     width: 30px;
     height: 30px;
     flex-shrink: 0;
@@ -340,12 +413,11 @@
     font-size: 15px;
     line-height: 1;
   }
-  .modal-close:hover { color: var(--fg); border-color: var(--accent); }
+  .modal-close:hover { color: var(--ink); border-color: var(--cobalt); }
 
   .media-slot {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
     min-height: 180px;
     display: flex;
     align-items: center;
@@ -353,113 +425,92 @@
     text-align: center;
     padding: 20px;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13.5px;
   }
-  .media-slot video { width: 100%; border-radius: 6px; display: block; }
+  .media-slot video { width: 100%; display: block; }
 
   .gallery { display: flex; flex-direction: column; gap: 10px; }
   .gallery-frame {
     position: relative;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
+    background: var(--paper);
+    border: 1px solid var(--line);
     overflow: hidden;
     aspect-ratio: 16/10;
     display: flex;
     align-items: center;
     justify-content: center;
   }
-  .gallery-frame img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    background: #fff;
-  }
+  .gallery-frame img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
   .gallery-arrow {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(17, 21, 27, 0.7);
-    border: 1px solid var(--border);
-    color: var(--fg);
+    background: color-mix(in srgb, var(--panel) 85%, transparent);
+    border: 1px solid var(--line);
+    color: var(--ink);
     width: 32px;
     height: 32px;
-    border-radius: 50%;
     cursor: pointer;
     font-size: 14px;
     line-height: 1;
   }
-  .gallery-arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .gallery-arrow:hover { border-color: var(--cobalt); color: var(--cobalt); }
   .gallery-arrow.prev { left: 10px; }
   .gallery-arrow.next { right: 10px; }
   .gallery-dots { display: flex; justify-content: center; gap: 6px; }
-  .gallery-dots button {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    border: none;
-    background: var(--border);
-    cursor: pointer;
-    padding: 0;
-  }
-  .gallery-dots button.active { background: var(--accent); }
-  .gallery-note {
-    font-size: 12.5px;
-    color: var(--muted);
-    text-align: center;
-  }
+  .gallery-dots button { width: 7px; height: 7px; border-radius: 50%; border: none; background: var(--line); cursor: pointer; padding: 0; }
+  .gallery-dots button.active { background: var(--cobalt); }
+  .gallery-note { font-size: 12px; color: var(--muted); text-align: center; }
 
   .trial-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
-  .trial-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 12.5px;
-    color: var(--muted);
-  }
-  .trial-timer { color: var(--accent); font-variant-numeric: tabular-nums; }
-  .trial-frame {
-    width: 100%;
-    aspect-ratio: 16/10;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: #000;
-  }
-  .trial-end {
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: flex-start;
-  }
-  .trial-end strong { color: var(--fg); }
-
   .demo-trigger {
-    font-family: "IBM Plex Mono", monospace;
-    font-size: 13px;
-    color: var(--bg);
-    background: var(--accent);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12.5px;
+    color: var(--panel);
+    background: var(--cobalt);
     border: none;
-    border-radius: 6px;
     padding: 10px 14px;
     cursor: pointer;
     width: fit-content;
+    display: inline-block;
+    text-decoration: none;
   }
-  .demo-trigger[disabled] {
-    background: var(--surface-2);
-    color: var(--muted);
-    cursor: not-allowed;
+  .demo-trigger[disabled] { background: var(--paper); color: var(--muted); cursor: not-allowed; }
+  .demo-trigger-note { font-size: 12px; color: var(--muted); }
+
+  .email-copy-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 12px 14px;
   }
-  .demo-trigger-note { font-size: 12.5px; color: var(--muted); }
+  .email-value {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 14px;
+    color: var(--ink);
+    overflow-wrap: anywhere;
+    min-width: 0;
+  }
+  .email-copy-btn {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 12px;
+    color: var(--cobalt);
+    background: var(--panel);
+    border: 1px solid var(--line);
+    padding: 7px 11px;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .email-copy-btn:hover { border-color: var(--cobalt); }
 </style>
 
 <div class="wrap">
 
-  <div class="hero">
+  <div class="titleblock">
     <span class="status">Disponible para nuevas oportunidades</span>
     <h1>Nicolás Zanini</h1>
     <p class="role-line">Angular · .NET / C# · SQL — de punta a punta, en producción real</p>
@@ -486,7 +537,7 @@
     </div>
   </div>
 
-  <section>
+  <section class="reveal">
     <p class="eyebrow">stack</p>
     <div class="stack-grid">
       <span class="tag">Angular</span>
@@ -503,13 +554,13 @@
     </div>
   </section>
 
-  <section>
+  <section class="reveal">
     <p class="eyebrow">proyectos</p>
     <div class="projects" id="projects-list"></div>
     <a class="project-link" href="https://github.com/NicolasZanini21">Ver más en GitHub →</a>
   </section>
 
-  <section>
+  <section class="reveal">
     <p class="eyebrow">contacto</p>
     <div class="contact-row">
       <button class="icon-btn" id="btn-email" type="button">
@@ -583,7 +634,7 @@
       desc: "Asistente virtual personal: aplicación web progresiva (PWA) accesible desde escritorio y móvil, con memoria de conversación, generación automática de archivos Excel, automatización de navegador con Playwright e integración con APIs de terceros.",
       tags: ["Python / Flask", "PostgreSQL", "PWA", "Playwright"],
       videoSrc: null,
-      demoUrl: null
+      demoUrl: "https://edith-web.onrender.com"
     },
     {
       id: "crm-viajes",
@@ -593,44 +644,61 @@
       desc: "Sistema de gestión comercial para una agencia de turismo: catálogo de destinos y paquetes, pasajeros, reservas y seguimiento de contacto, con diseño propio del modelo de datos y construcción incremental por etapas.",
       tags: ["Angular", ".NET / C#", "SQL Server / PostgreSQL"],
       videoSrc: null,
-      demoUrl: null
+      demoUrl: "https://crm-viajes-demo.netlify.app"
     }
   ];
 
   var CONTACT_EMAIL = "nicolas_zanini@hotmail.com";
-  var CONTACT_PHONE = "+54 341 6876713";
   var WHATSAPP_NUMBER = "5493416876713";
+
+  function hasDirectDemo(p) {
+    return !!p.demoUrl && !p.noLiveDemo && !(p.screenshots && p.screenshots.length) && !p.videoSrc;
+  }
 
   function renderProjects() {
     var list = document.getElementById("projects-list");
-    list.innerHTML = PROJECTS.map(function (p) {
+    list.innerHTML = PROJECTS.map(function (p, i) {
       var tags = p.tags.map(function (t) { return "<span>" + t + "</span>"; }).join("");
+      var ctaHtml = hasDirectDemo(p)
+        ? '<a class="demo-btn" href="' + p.demoUrl + '" target="_blank" rel="noopener noreferrer">Ver demo ↗</a>'
+        : '<button class="demo-btn" data-project="' + p.id + '" type="button">Ver demo</button>';
       return (
-        '<div class="project">' +
+        '<div class="project reveal" style="transition-delay:' + (i * 0.08) + 's">' +
           '<div class="project-head">' +
             "<h3>" + p.name + "</h3>" +
             '<span class="badge ' + p.status + '">' + p.statusLabel + "</span>" +
           "</div>" +
-          "<p>" + p.desc + "</p>" +
+          '<p class="desc">' + p.desc + "</p>" +
           '<div class="project-tags">' + tags + "</div>" +
-          '<div class="project-foot">' +
-            '<button class="demo-btn" data-project="' + p.id + '" type="button">Ver demo</button>' +
-          "</div>" +
+          '<div class="project-foot">' + ctaHtml + "</div>" +
         "</div>"
       );
     }).join("");
 
-    list.querySelectorAll(".demo-btn").forEach(function (btn) {
+    list.querySelectorAll("button.demo-btn").forEach(function (btn) {
       btn.addEventListener("click", function () {
         openModal(btn.getAttribute("data-project"));
       });
     });
+
+    initReveal();
   }
 
-  var activeTimer = null;
-
-  function stopTrial() {
-    if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
+  function initReveal() {
+    var targets = document.querySelectorAll(".reveal");
+    if (!("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
+    targets.forEach(function (el) { io.observe(el); });
   }
 
   function openModal(id) {
@@ -653,6 +721,8 @@
         "</div>";
     } else if (p.videoSrc) {
       mediaHtml = '<div class="media-slot"><video src="' + p.videoSrc + '" controls playsinline></video></div>';
+    } else if (p.demoUrl) {
+      mediaHtml = "";
     } else {
       mediaHtml = '<div class="media-slot">Video de demostración en preparación. Mientras tanto, escribime y te muestro cómo funciona.</div>';
     }
@@ -660,15 +730,14 @@
     var trialHtml = p.noLiveDemo
       ? (
           '<div class="trial-wrap">' +
-            '<button class="demo-trigger" disabled type="button">Probar la demo en vivo (10 min)</button>' +
-            '<p class="demo-trigger-note">Este sistema corre en producción para un cliente real, así que no puedo exponer un acceso en vivo por confidencialidad. Escribime y te lo muestro yo mismo.</p>' +
+            '<p class="demo-trigger-note">Si querés una demostración más profesional de este sistema, no dudes en contactarme para programar una videollamada.</p>' +
           "</div>"
         )
       : p.demoUrl
       ? (
-          '<div class="trial-wrap" id="trial-wrap">' +
-            '<button class="demo-trigger" id="start-trial" type="button">Probar la demo en vivo (10 min)</button>' +
-            '<p class="demo-trigger-note">Acceso de prueba por tiempo limitado al sistema real.</p>' +
+          '<div class="trial-wrap">' +
+            '<a class="demo-trigger" href="' + p.demoUrl + '" target="_blank" rel="noopener noreferrer">Ver demo en vivo ↗</a>' +
+            '<p class="demo-trigger-note">Se abre en una pestaña nueva. Es el sistema real funcionando, con datos de prueba.</p>' +
           "</div>"
         )
       : (
@@ -702,61 +771,21 @@
       });
     }
 
-    if (p.demoUrl) {
-      document.getElementById("start-trial").addEventListener("click", function () {
-        startTrial(p.demoUrl);
-      });
-    }
-
-    document.getElementById("modal-backdrop").hidden = false;
+    openModalBackdrop();
   }
 
-  function startTrial(url) {
-    var wrap = document.getElementById("trial-wrap");
-    if (!wrap) return;
-    var secondsLeft = 600;
-    wrap.innerHTML =
-      '<div class="trial-bar"><span>Demo en vivo</span><span class="trial-timer" id="trial-timer">10:00</span></div>' +
-      '<iframe class="trial-frame" src="' + url + '"></iframe>';
-
-    var timerEl = document.getElementById("trial-timer");
-    stopTrial();
-    activeTimer = setInterval(function () {
-      secondsLeft -= 1;
-      var m = Math.floor(secondsLeft / 60);
-      var s = secondsLeft % 60;
-      timerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
-      if (secondsLeft <= 0) {
-        stopTrial();
-        wrap.innerHTML =
-          '<div class="trial-end">' +
-            "<strong>Terminó el tiempo de la demo.</strong>" +
-            "<span>Si te interesa usarlo o ver más detalles, escribime y lo charlamos.</span>" +
-            '<button class="demo-trigger" id="trial-contact">Copiar mi email</button>' +
-          "</div>";
-        document.getElementById("trial-contact").addEventListener("click", function () {
-          copyToClipboard(CONTACT_EMAIL, this, "Copiado");
-        });
-      }
-    }, 1000);
+  function openModalBackdrop() {
+    var backdrop = document.getElementById("modal-backdrop");
+    backdrop.hidden = false;
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { backdrop.classList.add("is-open"); });
+    });
   }
 
   function closeModal() {
-    stopTrial();
-    document.getElementById("modal-backdrop").hidden = true;
-  }
-
-  function copyToClipboard(text, el, successLabel) {
-    var original = el.textContent;
-    function done() {
-      el.textContent = successLabel;
-      setTimeout(function () { el.textContent = original; }, 1500);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(done).catch(done);
-    } else {
-      done();
-    }
+    var backdrop = document.getElementById("modal-backdrop");
+    backdrop.classList.remove("is-open");
+    setTimeout(function () { backdrop.hidden = true; }, 250);
   }
 
   document.getElementById("modal-close").addEventListener("click", closeModal);
@@ -776,46 +805,29 @@
     document.getElementById("modal-title").textContent = "Escribime";
     var body = document.getElementById("modal-body");
     body.innerHTML =
-      '<p style="color:var(--muted);margin:0 0 4px;font-size:14px;">' +
-        "Esta página no puede enviar el mail por vos (no tiene servidor propio), pero te lo dejo " +
-        "armado para que lo mandes en un clic desde tu propio correo, o lo copies si preferís pegarlo a mano." +
-      "</p>" +
-      '<div style="display:flex;flex-direction:column;gap:10px;">' +
-        '<input id="em-name" type="text" placeholder="Tu nombre" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--fg);">' +
-        '<textarea id="em-msg" rows="4" placeholder="Tu mensaje" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--fg);resize:vertical;"></textarea>' +
-        '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
-          '<a id="em-send" class="demo-trigger" style="text-decoration:none;" target="_blank" rel="noopener">Abrir en mi mail</a>' +
-          '<button id="em-copy" class="demo-trigger" type="button" style="background:var(--surface-2);color:var(--fg);">Copiar mensaje</button>' +
+      '<div style="display:flex;flex-direction:column;gap:16px;">' +
+        '<p style="color:var(--muted);margin:0;font-size:13.5px;">Esta es mi dirección, copiala o abrila directo en tu correo.</p>' +
+        '<div class="email-copy-row">' +
+          '<span class="email-value">' + CONTACT_EMAIL + "</span>" +
+          '<button id="em-copy" class="email-copy-btn" type="button" aria-label="Copiar dirección de email">Copiar</button>' +
         "</div>" +
+        '<a class="demo-trigger" style="text-decoration:none;" href="mailto:' + CONTACT_EMAIL + '" target="_blank" rel="noopener">Abrir en mi mail ↗</a>' +
       "</div>";
 
-    function buildMail() {
-      var name = document.getElementById("em-name").value.trim();
-      var msg = document.getElementById("em-msg").value.trim();
-      var subject = "Contacto desde portfolio - " + (name || "sin nombre");
-      var fullBody = (msg || "(sin mensaje)") + "\n\n— " + (name || "");
-      var mailto = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(fullBody);
-      document.getElementById("em-send").href = mailto;
-      return { subject: subject, fullBody: fullBody };
-    }
-
-    buildMail();
-    document.getElementById("em-name").addEventListener("input", buildMail);
-    document.getElementById("em-msg").addEventListener("input", buildMail);
     document.getElementById("em-copy").addEventListener("click", function () {
-      var m = buildMail();
-      var text = "Para: " + CONTACT_EMAIL + "\nAsunto: " + m.subject + "\n\n" + m.fullBody;
       var self = this;
+      function done() {
+        self.textContent = "Copiado";
+        setTimeout(function () { self.textContent = "Copiar"; }, 1500);
+      }
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(function () {
-          var original = self.textContent;
-          self.textContent = "Copiado";
-          setTimeout(function () { self.textContent = original; }, 1500);
-        });
+        navigator.clipboard.writeText(CONTACT_EMAIL).then(done).catch(done);
+      } else {
+        done();
       }
     });
 
-    document.getElementById("modal-backdrop").hidden = false;
+    openModalBackdrop();
   }
 
   renderProjects();
