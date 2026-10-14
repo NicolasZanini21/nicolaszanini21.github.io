@@ -1,0 +1,728 @@
+<title>Nicolás Zanini</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* Layout: single-column terminal-panel portfolio — hero, stack tags,
+     project cards with a demo modal (video + time-boxed live trial),
+     and an icon row for contact */
+  :root {
+    --bg: #11151b;
+    --surface: #171c24;
+    --surface-2: #1d2330;
+    --fg: #e8ecf1;
+    --muted: #8a94a6;
+    --accent: #d9914a;
+    --border: #2a3140;
+    --good: #5fae76;
+    --bad: #d9705c;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    margin: 0;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  h1, h2, h3 { text-wrap: balance; font-family: "IBM Plex Sans", sans-serif; margin: 0; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+  a { color: inherit; }
+  button { font-family: inherit; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding-block: 64px 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .wrap > * {
+    animation: rise .6s cubic-bezier(.2,.7,.3,1) both;
+  }
+  .wrap > *:nth-child(1) { animation-delay: .02s; }
+  .wrap > *:nth-child(2) { animation-delay: .12s; }
+  .wrap > *:nth-child(3) { animation-delay: .22s; }
+  .wrap > *:nth-child(4) { animation-delay: .32s; }
+  @media (prefers-reduced-motion: reduce) {
+    .wrap > * { animation: none; }
+  }
+
+  .project {
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .project:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-soft, var(--border));
+  }
+  .tag, .project-tags span {
+    transition: border-color .15s ease, color .15s ease;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Hero ---- */
+  .hero { display: flex; flex-direction: column; gap: 18px; }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    width: fit-content;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--good);
+    background: color-mix(in srgb, var(--good) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+    border-radius: 999px;
+    padding: 5px 12px 5px 10px;
+  }
+  .status::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--good);
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 45%, transparent); }
+    70% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--good) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 0%, transparent); }
+  }
+  @media (prefers-reduced-motion: reduce) { .status::before { animation: none; } }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .role-line {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+    color: var(--accent);
+  }
+
+  .bio {
+    color: var(--muted);
+    max-width: 64ch;
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .bio strong { color: var(--fg); font-weight: 600; }
+
+  /* ---- Section shell ---- */
+  section { display: flex; flex-direction: column; gap: 20px; }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+
+  /* ---- Stack ---- */
+  .stack-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--fg);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 11px;
+  }
+
+  /* ---- Projects ---- */
+  .projects { display: flex; flex-direction: column; gap: 16px; }
+
+  .project {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .project-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .project-head h3 { font-size: 1.15rem; font-weight: 600; min-width: 0; }
+
+  .badge {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    padding: 4px 10px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .badge.live {
+    color: var(--good);
+    background: color-mix(in srgb, var(--good) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+  }
+  .badge.dev {
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 14%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+
+  .project p { color: var(--muted); margin: 0; min-width: 0; }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-tags span {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 3px 8px;
+  }
+
+  .project-foot {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-top: 4px;
+  }
+
+  .demo-btn {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    padding: 9px 14px;
+    cursor: pointer;
+    transition: opacity .15s ease;
+  }
+  .demo-btn:hover { opacity: .85; }
+  .demo-btn:focus-visible { outline: 2px solid var(--fg); outline-offset: 2px; }
+
+  .project-link {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--accent);
+    text-decoration: none;
+    width: fit-content;
+  }
+  .project-link:hover { text-decoration: underline; }
+
+  /* ---- Contact icon row ---- */
+  .contact-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+  .icon-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 7px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 0;
+    width: 76px;
+  }
+  .icon-btn .circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color .15s ease, color .15s ease, background .15s ease;
+    color: var(--fg);
+  }
+  .icon-btn .circle svg { width: 22px; height: 22px; }
+  .icon-btn:hover .circle, .icon-btn:focus-visible .circle {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .icon-btn:focus-visible { outline: none; }
+  .icon-btn:focus-visible .circle { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .icon-btn .caption {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  footer {
+    color: var(--muted);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    text-align: center;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ---- Modal ---- */
+  .modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(8, 10, 14, 0.72);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    padding-top: max(20px, env(safe-area-inset-top, 0px));
+    padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+    z-index: 100;
+  }
+  .modal-backdrop[hidden] { display: none; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    max-width: 560px;
+    width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .modal-head h3 { font-size: 1.2rem; min-width: 0; }
+  .modal-close {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+  }
+  .modal-close:hover { color: var(--fg); border-color: var(--accent); }
+
+  .media-slot {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .media-slot video { width: 100%; border-radius: 6px; display: block; }
+
+  .trial-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
+  .trial-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .trial-timer { color: var(--accent); font-variant-numeric: tabular-nums; }
+  .trial-frame {
+    width: 100%;
+    aspect-ratio: 16/10;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: #000;
+  }
+  .trial-end {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .trial-end strong { color: var(--fg); }
+
+  .demo-trigger {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 13px;
+    color: var(--bg);
+    background: var(--accent);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 14px;
+    cursor: pointer;
+    width: fit-content;
+  }
+  .demo-trigger[disabled] {
+    background: var(--surface-2);
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+  .demo-trigger-note { font-size: 12.5px; color: var(--muted); }
+</style>
+
+<div class="wrap">
+
+  <div class="hero">
+    <span class="status">Disponible para nuevas oportunidades</span>
+    <h1>Nicolás Zanini</h1>
+    <p class="role-line">Angular · .NET / C# · SQL — de punta a punta, en producción real</p>
+    <div class="bio">
+      <p>
+        Trabajo de forma independiente desde 2025 como único desarrollador de los sistemas que
+        construyo: relevamiento con el cliente, modelado de datos, backend, frontend y despliegue.
+        Antes de programar pasé <strong>ocho años en atención al cliente, ventas y administración</strong>,
+        así que llego a cada proyecto entendiendo el negocio antes de escribir la primera línea de código.
+      </p>
+      <p>
+        Incorporo herramientas de IA (Claude, entre otras) como parte real del flujo de trabajo,
+        no como experimento, para moverme más rápido sin perder calidad de código.
+      </p>
+      <p>
+        Me dedico a construir y mantener sistemas de gestión a medida, de punta a punta: desde la
+        conversación inicial con el cliente hasta el sistema funcionando en producción. Hoy trabajo
+        de forma independiente, pero mi objetivo es sumarme a un equipo de forma estable, para
+        crecer como profesional y seguir incorporando conocimiento junto a otros desarrolladores.
+        Busco oportunidades en Argentina: presencial en Rosario, o remoto en el resto del país.
+        Además, tengo en trámite mi ciudadanía europea, así que también estoy abierto a posibilidades
+        con empresas de Europa.
+      </p>
+    </div>
+  </div>
+
+  <section>
+    <p class="eyebrow">stack</p>
+    <div class="stack-grid">
+      <span class="tag">Angular</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">JavaScript</span>
+      <span class="tag">C#</span>
+      <span class="tag">.NET</span>
+      <span class="tag">Entity Framework</span>
+      <span class="tag">SQL Server</span>
+      <span class="tag">PostgreSQL</span>
+      <span class="tag">REST APIs</span>
+      <span class="tag">Python / Flask</span>
+      <span class="tag">Git</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="eyebrow">proyectos</p>
+    <div class="projects" id="projects-list"></div>
+    <a class="project-link" href="https://github.com/NicolasZanini21">Ver más en GitHub →</a>
+  </section>
+
+  <section>
+    <p class="eyebrow">contacto</p>
+    <div class="contact-row">
+      <button class="icon-btn" id="btn-email" type="button">
+        <span class="circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm1.2 2 7.8 5.6L19.8 7H4.2zM4 8.4V18h16V8.4l-7.4 5.3a1 1 0 0 1-1.2 0L4 8.4z"/></svg>
+        </span>
+        <span class="caption" id="email-caption">Email</span>
+      </button>
+
+      <a class="icon-btn" id="btn-whatsapp" href="#" target="_blank" rel="noopener">
+        <span class="circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.15-1.7-.84-2-.94-.27-.1-.46-.15-.66.15-.2.3-.76.94-.93 1.13-.17.2-.34.22-.63.08-.3-.15-1.24-.46-2.37-1.47-.88-.78-1.47-1.75-1.64-2.05-.17-.3-.02-.46.13-.6.13-.13.3-.34.44-.5.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.18-.24-.58-.48-.5-.66-.5-.17 0-.37-.02-.56-.02-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48 0 1.46 1.07 2.87 1.22 3.07.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.7-.7 1.95-1.37.24-.68.24-1.26.17-1.37-.07-.12-.26-.2-.56-.35z"/><path d="M12.04 2C6.56 2 2.1 6.42 2.1 11.85c0 1.9.52 3.68 1.44 5.2L2 22l5.1-1.5a9.9 9.9 0 0 0 4.94 1.3h.01c5.48 0 9.94-4.42 9.94-9.86C21.99 6.42 17.53 2 12.04 2zm0 17.9h-.01a8.2 8.2 0 0 1-4.2-1.15l-.3-.18-3.03.9.9-2.95-.2-.3a8.03 8.03 0 0 1-1.25-4.37c0-4.47 3.67-8.11 8.19-8.11 4.52 0 8.19 3.64 8.19 8.11 0 4.47-3.67 8.05-8.19 8.05z"/></svg>
+        </span>
+        <span class="caption">WhatsApp</span>
+      </a>
+
+      <a class="icon-btn" href="https://linkedin.com/in/nicolaszanini" target="_blank" rel="noopener">
+        <span class="circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+        </span>
+        <span class="caption">LinkedIn</span>
+      </a>
+
+      <a class="icon-btn" href="https://github.com/NicolasZanini21" target="_blank" rel="noopener">
+        <span class="circle" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.36.81 1.1.81 2.22v3.29c0 .32.21.69.82.58C20.56 22.1 24 17.6 24 12.3 24 5.67 18.63.3 12 .3z"/></svg>
+        </span>
+        <span class="caption">GitHub</span>
+      </a>
+    </div>
+  </section>
+
+  <footer>Rosario, Santa Fe, Argentina</footer>
+
+</div>
+
+<div class="modal-backdrop" id="modal-backdrop" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h3 id="modal-title">Proyecto</h3>
+      <button class="modal-close" id="modal-close" type="button" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  var PROJECTS = [
+    {
+      id: "auxilio",
+      name: "Auxilio Express",
+      status: "live",
+      statusLabel: "En producción",
+      desc: "Sistema de gestión para una empresa de auxilio mecánico y remolque que opera con compañías de seguros y empresas internacionales de asistencia vehicular. Administra clientes, servicios y operación diaria de una flota con traslados a todo el país.",
+      tags: ["Angular", ".NET / C#", "SQL Server"],
+      videoSrc: null,
+      demoUrl: null,
+      noLiveDemo: true
+    },
+    {
+      id: "edith",
+      name: "Edith",
+      status: "dev",
+      statusLabel: "En desarrollo",
+      desc: "Asistente virtual personal: aplicación web progresiva (PWA) accesible desde escritorio y móvil, con memoria de conversación, generación automática de archivos Excel, automatización de navegador con Playwright e integración con APIs de terceros.",
+      tags: ["Python / Flask", "PostgreSQL", "PWA", "Playwright"],
+      videoSrc: null,
+      demoUrl: null
+    },
+    {
+      id: "crm-viajes",
+      name: "CRM para agencia de viajes",
+      status: "dev",
+      statusLabel: "En desarrollo",
+      desc: "Sistema de gestión comercial para una agencia de turismo: catálogo de destinos y paquetes, pasajeros, reservas y seguimiento de contacto, con diseño propio del modelo de datos y construcción incremental por etapas.",
+      tags: ["Angular", ".NET / C#", "SQL Server / PostgreSQL"],
+      videoSrc: null,
+      demoUrl: null
+    }
+  ];
+
+  var CONTACT_EMAIL = "nicolas_zanini@hotmail.com";
+  var CONTACT_PHONE = "+54 341 6876713";
+  var WHATSAPP_NUMBER = "5493416876713";
+
+  function renderProjects() {
+    var list = document.getElementById("projects-list");
+    list.innerHTML = PROJECTS.map(function (p) {
+      var tags = p.tags.map(function (t) { return "<span>" + t + "</span>"; }).join("");
+      return (
+        '<div class="project">' +
+          '<div class="project-head">' +
+            "<h3>" + p.name + "</h3>" +
+            '<span class="badge ' + p.status + '">' + p.statusLabel + "</span>" +
+          "</div>" +
+          "<p>" + p.desc + "</p>" +
+          '<div class="project-tags">' + tags + "</div>" +
+          '<div class="project-foot">' +
+            '<button class="demo-btn" data-project="' + p.id + '" type="button">Ver demo</button>' +
+          "</div>" +
+        "</div>"
+      );
+    }).join("");
+
+    list.querySelectorAll(".demo-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        openModal(btn.getAttribute("data-project"));
+      });
+    });
+  }
+
+  var activeTimer = null;
+
+  function stopTrial() {
+    if (activeTimer) { clearInterval(activeTimer); activeTimer = null; }
+  }
+
+  function openModal(id) {
+    var p = PROJECTS.filter(function (x) { return x.id === id; })[0];
+    if (!p) return;
+    document.getElementById("modal-title").textContent = p.name;
+    var body = document.getElementById("modal-body");
+
+    var mediaHtml = p.videoSrc
+      ? '<div class="media-slot"><video src="' + p.videoSrc + '" controls playsinline></video></div>'
+      : '<div class="media-slot">Video de demostración en preparación. Mientras tanto, escribime y te muestro cómo funciona.</div>';
+
+    var trialHtml = p.noLiveDemo
+      ? (
+          '<div class="trial-wrap">' +
+            '<button class="demo-trigger" disabled type="button">Probar la demo en vivo (10 min)</button>' +
+            '<p class="demo-trigger-note">Este sistema corre en producción para un cliente real, así que no puedo exponer un acceso en vivo por confidencialidad. Escribime y te lo muestro yo mismo.</p>' +
+          "</div>"
+        )
+      : p.demoUrl
+      ? (
+          '<div class="trial-wrap" id="trial-wrap">' +
+            '<button class="demo-trigger" id="start-trial" type="button">Probar la demo en vivo (10 min)</button>' +
+            '<p class="demo-trigger-note">Acceso de prueba por tiempo limitado al sistema real.</p>' +
+          "</div>"
+        )
+      : (
+          '<div class="trial-wrap">' +
+            '<button class="demo-trigger" disabled type="button">Probar la demo en vivo (10 min)</button>' +
+            '<p class="demo-trigger-note">Todavía no está hosteado — va a estar disponible acá pronto.</p>' +
+          "</div>"
+        );
+
+    body.innerHTML = mediaHtml + trialHtml;
+
+    if (p.demoUrl) {
+      document.getElementById("start-trial").addEventListener("click", function () {
+        startTrial(p.demoUrl);
+      });
+    }
+
+    document.getElementById("modal-backdrop").hidden = false;
+  }
+
+  function startTrial(url) {
+    var wrap = document.getElementById("trial-wrap");
+    if (!wrap) return;
+    var secondsLeft = 600;
+    wrap.innerHTML =
+      '<div class="trial-bar"><span>Demo en vivo</span><span class="trial-timer" id="trial-timer">10:00</span></div>' +
+      '<iframe class="trial-frame" src="' + url + '"></iframe>';
+
+    var timerEl = document.getElementById("trial-timer");
+    stopTrial();
+    activeTimer = setInterval(function () {
+      secondsLeft -= 1;
+      var m = Math.floor(secondsLeft / 60);
+      var s = secondsLeft % 60;
+      timerEl.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+      if (secondsLeft <= 0) {
+        stopTrial();
+        wrap.innerHTML =
+          '<div class="trial-end">' +
+            "<strong>Terminó el tiempo de la demo.</strong>" +
+            "<span>Si te interesa usarlo o ver más detalles, escribime y lo charlamos.</span>" +
+            '<button class="demo-trigger" id="trial-contact">Copiar mi email</button>' +
+          "</div>";
+        document.getElementById("trial-contact").addEventListener("click", function () {
+          copyToClipboard(CONTACT_EMAIL, this, "Copiado");
+        });
+      }
+    }, 1000);
+  }
+
+  function closeModal() {
+    stopTrial();
+    document.getElementById("modal-backdrop").hidden = true;
+  }
+
+  function copyToClipboard(text, el, successLabel) {
+    var original = el.textContent;
+    function done() {
+      el.textContent = successLabel;
+      setTimeout(function () { el.textContent = original; }, 1500);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done).catch(done);
+    } else {
+      done();
+    }
+  }
+
+  document.getElementById("modal-close").addEventListener("click", closeModal);
+  document.getElementById("modal-backdrop").addEventListener("click", function (e) {
+    if (e.target === this) closeModal();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape") closeModal();
+  });
+
+  document.getElementById("btn-email").addEventListener("click", openEmailModal);
+
+  var waText = encodeURIComponent("Hola Nico! Vi tu portfolio y quería contactarte.");
+  document.getElementById("btn-whatsapp").href = "https://wa.me/" + WHATSAPP_NUMBER + "?text=" + waText;
+
+  function openEmailModal() {
+    document.getElementById("modal-title").textContent = "Escribime";
+    var body = document.getElementById("modal-body");
+    body.innerHTML =
+      '<p style="color:var(--muted);margin:0 0 4px;font-size:14px;">' +
+        "Esta página no puede enviar el mail por vos (no tiene servidor propio), pero te lo dejo " +
+        "armado para que lo mandes en un clic desde tu propio correo, o lo copies si preferís pegarlo a mano." +
+      "</p>" +
+      '<div style="display:flex;flex-direction:column;gap:10px;">' +
+        '<input id="em-name" type="text" placeholder="Tu nombre" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--fg);">' +
+        '<textarea id="em-msg" rows="4" placeholder="Tu mensaje" style="font-family:\'IBM Plex Mono\',monospace;font-size:13px;background:var(--surface-2);border:1px solid var(--border);border-radius:6px;padding:9px 11px;color:var(--fg);resize:vertical;"></textarea>' +
+        '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
+          '<a id="em-send" class="demo-trigger" style="text-decoration:none;" target="_blank" rel="noopener">Abrir en mi mail</a>' +
+          '<button id="em-copy" class="demo-trigger" type="button" style="background:var(--surface-2);color:var(--fg);">Copiar mensaje</button>' +
+        "</div>" +
+      "</div>";
+
+    function buildMail() {
+      var name = document.getElementById("em-name").value.trim();
+      var msg = document.getElementById("em-msg").value.trim();
+      var subject = "Contacto desde portfolio - " + (name || "sin nombre");
+      var fullBody = (msg || "(sin mensaje)") + "\n\n— " + (name || "");
+      var mailto = "mailto:" + CONTACT_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(fullBody);
+      document.getElementById("em-send").href = mailto;
+      return { subject: subject, fullBody: fullBody };
+    }
+
+    buildMail();
+    document.getElementById("em-name").addEventListener("input", buildMail);
+    document.getElementById("em-msg").addEventListener("input", buildMail);
+    document.getElementById("em-copy").addEventListener("click", function () {
+      var m = buildMail();
+      var text = "Para: " + CONTACT_EMAIL + "\nAsunto: " + m.subject + "\n\n" + m.fullBody;
+      var self = this;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () {
+          var original = self.textContent;
+          self.textContent = "Copiado";
+          setTimeout(function () { self.textContent = original; }, 1500);
+        });
+      }
+    });
+
+    document.getElementById("modal-backdrop").hidden = false;
+  }
+
+  renderProjects();
+</script>
