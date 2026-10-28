@@ -1,59 +1,68 @@
+<meta charset="utf-8">
 <title>Nicolás Zanini</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Archivo:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   /*
-    Layout concept: "plano de obra" — a blueprint/ledger reading. Paper-blue
-    light surface ruled like drafting paper, projects laid out as numbered
-    sheets (01, 02, 03) in a real sequence, serif display for the title
-    block, grotesk for running text, mono for every technical label and
-    coordinate-style metadata — the vocabulary of a technical drawing.
+    Layout concept: alive, not a static sheet. Rounded panels, gradient
+    accent, floating glow behind the hero, solid-fill status pills (no more
+    low-contrast outlined text), and a confident, sales-forward bio. Dark
+    terminal stays dark regardless of theme; everything else follows light/dark.
   */
   :root {
-    --paper: #eef1ef;
+    --bg: #f2f3fb;
     --panel: #ffffff;
-    --ink: #1c2b3a;
-    --muted: #5d7079;
-    --line: #c7d2cf;
-    --cobalt: #2c5f8a;
-    --cobalt-soft: #e4ecf1;
-    --good: #3f7a5c;
+    --ink: #15192b;
+    --muted: #5c6178;
+    --line: #e4e6f3;
+    --accent: #5a4fe6;
+    --accent-2: #0fb8c9;
+    --live: #18a768;
+    --live-ink: #ffffff;
+    --blob-1: #6a5bf0;
+    --blob-2: #19c2c9;
+    --blob-3: #ef6fa0;
     color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --paper: #13191d;
-      --panel: #1a2227;
-      --ink: #e9eef0;
-      --muted: #8fa0a6;
-      --line: #2c383d;
-      --cobalt: #7fb3d9;
-      --cobalt-soft: #223038;
-      --good: #6cb493;
+      --bg: #0a0b13;
+      --panel: #141624;
+      --ink: #edeffa;
+      --muted: #9498b3;
+      --line: #262a3d;
+      --accent: #8d84ff;
+      --accent-2: #3fe0d6;
+      --live: #2bd47f;
+      --live-ink: #06130c;
+      --blob-1: #4c3fcf;
+      --blob-2: #0f8f97;
+      --blob-3: #a63f6d;
       color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #13191d;
-    --panel: #1a2227;
-    --ink: #e9eef0;
-    --muted: #8fa0a6;
-    --line: #2c383d;
-    --cobalt: #7fb3d9;
-    --cobalt-soft: #223038;
-    --good: #6cb493;
+    --bg: #0a0b13;
+    --panel: #141624;
+    --ink: #edeffa;
+    --muted: #9498b3;
+    --line: #262a3d;
+    --accent: #8d84ff;
+    --accent-2: #3fe0d6;
+    --live: #2bd47f;
+    --live-ink: #06130c;
+    --blob-1: #4c3fcf;
+    --blob-2: #0f8f97;
+    --blob-3: #a63f6d;
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
 
   body {
-    background: var(--paper);
-    background-image:
-      repeating-linear-gradient(0deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 28px),
-      repeating-linear-gradient(90deg, color-mix(in srgb, var(--line) 55%, transparent) 0px, transparent 1px, transparent 28px);
+    background: var(--bg);
     color: var(--ink);
     margin: 0;
     font-family: "Archivo", system-ui, -apple-system, sans-serif;
@@ -61,7 +70,20 @@
     line-height: 1.6;
     padding-left: max(16px, env(safe-area-inset-left, 0px));
     padding-right: max(16px, env(safe-area-inset-right, 0px));
+    position: relative;
+    overflow-x: hidden;
   }
+
+  .bg-blobs { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+  .bg-blobs span {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    opacity: .35;
+  }
+  .bg-blobs span:nth-child(1) { width: 440px; height: 440px; top: -160px; left: -120px; background: var(--blob-1); }
+  .bg-blobs span:nth-child(2) { width: 380px; height: 380px; top: 280px; right: -160px; background: var(--blob-2); }
+  .bg-blobs span:nth-child(3) { width: 340px; height: 340px; bottom: -140px; left: 10%; background: var(--blob-3); opacity: .22; }
 
   h1, h2, h3 { text-wrap: balance; margin: 0; font-family: "Fraunces", Georgia, serif; }
   .mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
@@ -69,12 +91,12 @@
   button { font-family: inherit; }
 
   .wrap {
-    max-width: 780px;
+    max-width: 800px;
     margin: 0 auto;
-    padding-block: 56px 48px;
+    padding-block: 52px 48px;
     display: flex;
     flex-direction: column;
-    gap: 52px;
+    gap: 46px;
   }
 
   @keyframes rise {
@@ -99,7 +121,7 @@
     .reveal { opacity: 1; transform: none; transition: none; }
   }
 
-  /* ---- Eyebrow rule draws in ---- */
+  /* ---- Eyebrow rule ---- */
   .eyebrow::after {
     transform: scaleX(0);
     transform-origin: left;
@@ -108,7 +130,7 @@
   .reveal.is-visible .eyebrow::after { transform: scaleX(1); }
   @media (prefers-reduced-motion: reduce) { .eyebrow::after { transform: none; } }
 
-  /* ---- Title block sheen sweep on load ---- */
+  /* ---- Title block sheen sweep ---- */
   @keyframes sheen {
     0% { transform: translateX(-120%) skewX(-12deg); }
     100% { transform: translateX(220%) skewX(-12deg); }
@@ -119,37 +141,23 @@
     position: absolute;
     inset: 0;
     width: 40%;
-    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--cobalt) 16%, transparent), transparent);
+    background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 14%, transparent), transparent);
     animation: sheen 1.4s ease-out .5s both;
     pointer-events: none;
   }
   @media (prefers-reduced-motion: reduce) { .titleblock::after { display: none; } }
 
-  /* ---- Role line underline draw ---- */
-  .role-line { position: relative; display: inline-block; padding-bottom: 4px; }
-  .role-line::after {
-    content: "";
-    position: absolute;
-    left: 0; bottom: 0;
-    height: 1px;
-    width: 100%;
-    background: var(--cobalt);
-    transform: scaleX(0);
-    transform-origin: left;
-    animation: drawline .8s cubic-bezier(.2,.7,.3,1) 1s both;
-  }
-  @keyframes drawline { to { transform: scaleX(1); } }
-  @media (prefers-reduced-motion: reduce) { .role-line::after { animation: none; transform: scaleX(1); } }
-
   /* ---- Title block ---- */
   .titleblock {
     background: var(--panel);
     border: 1px solid var(--line);
-    padding: 28px 26px;
+    border-radius: 26px;
+    padding: 34px 30px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 18px;
     position: relative;
+    box-shadow: 0 30px 60px -40px color-mix(in srgb, var(--accent) 45%, transparent);
   }
 
   .status {
@@ -159,46 +167,60 @@
     width: fit-content;
     font-family: "JetBrains Mono", monospace;
     font-size: 12.5px;
+    font-weight: 600;
     letter-spacing: 0.02em;
-    color: var(--good);
-    border: 1px solid color-mix(in srgb, var(--good) 45%, transparent);
-    padding: 5px 11px 5px 9px;
+    color: var(--live-ink);
+    background: var(--live);
+    border-radius: 999px;
+    padding: 6px 13px 6px 10px;
   }
   .status::before {
     content: "";
     width: 7px; height: 7px;
-    background: var(--good);
+    border-radius: 50%;
+    background: var(--live-ink);
     animation: pulse 2.2s ease-out infinite;
   }
   @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 45%, transparent); }
-    70% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--good) 0%, transparent); }
-    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--good) 0%, transparent); }
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--live-ink) 55%, transparent); }
+    70% { box-shadow: 0 0 0 7px color-mix(in srgb, var(--live-ink) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--live-ink) 0%, transparent); }
   }
   @media (prefers-reduced-motion: reduce) { .status::before { animation: none; } }
 
   .titleblock h1 {
-    font-size: clamp(2.1rem, 5.6vw, 3rem);
-    font-weight: 500;
+    font-size: clamp(2.3rem, 6.4vw, 3.4rem);
+    font-weight: 600;
     font-style: normal;
     letter-spacing: -0.01em;
+    background: linear-gradient(120deg, var(--ink) 30%, var(--accent) 75%, var(--accent-2) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
 
-  .role-line {
+  .role-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .role-chip {
     font-family: "JetBrains Mono", monospace;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    color: var(--cobalt);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, var(--panel));
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    border-radius: 999px;
+    padding: 5px 12px;
   }
 
   .bio {
     color: var(--muted);
     max-width: 66ch;
-    font-size: 1rem;
+    font-size: 1.02rem;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
   }
-  .bio strong { color: var(--ink); font-weight: 600; }
+  .bio strong { color: var(--ink); font-weight: 700; }
+  .bio .cta-line { color: var(--ink); font-weight: 600; }
 
   /* ---- Section shell ---- */
   section { display: flex; flex-direction: column; gap: 18px; }
@@ -216,36 +238,52 @@
   .eyebrow::after { content: ""; flex: 1; height: 1px; background: var(--line); }
 
   /* ---- Stack ---- */
-  .stack-grid { display: flex; flex-wrap: wrap; gap: 0; border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+  .stack-grid { display: flex; flex-wrap: wrap; gap: 9px; }
   .tag {
     font-family: "JetBrains Mono", monospace;
     font-size: 12.5px;
+    font-weight: 500;
     color: var(--ink);
     background: var(--panel);
-    border-right: 1px solid var(--line);
-    border-bottom: 1px solid var(--line);
-    padding: 7px 12px;
-    transition: background .2s ease, color .2s ease;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 8px 14px;
+    transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
   }
-  .tag:hover { background: var(--cobalt); color: var(--panel); }
+  .tag:hover {
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    color: #fff;
+    transform: translateY(-2px);
+  }
 
-  /* ---- Projects as sheets ---- */
-  .projects { display: flex; flex-direction: column; gap: 14px; }
+  /* ---- Projects ---- */
+  .projects { display: flex; flex-direction: column; gap: 18px; }
 
   .project {
     background: var(--panel);
     border: 1px solid var(--line);
-    padding: 22px 24px;
+    border-radius: 22px;
+    padding: 24px 26px;
     display: flex;
     flex-direction: column;
     gap: 14px;
     position: relative;
+    overflow: hidden;
     transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .3s ease, box-shadow .3s ease;
   }
+  .project::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    opacity: .85;
+  }
   .project:hover, .project:focus-within {
-    transform: translateY(-4px);
-    border-color: color-mix(in srgb, var(--cobalt) 55%, var(--line));
-    box-shadow: 0 14px 28px -18px color-mix(in srgb, var(--cobalt) 45%, transparent);
+    transform: translateY(-5px);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    box-shadow: 0 20px 40px -24px color-mix(in srgb, var(--accent) 55%, transparent);
   }
   .project-head {
     display: flex;
@@ -254,28 +292,30 @@
     gap: 12px;
     flex-wrap: wrap;
   }
-  .project-head h3 { font-size: 1.25rem; font-weight: 500; min-width: 0; }
+  .project-head h3 { font-size: 1.3rem; font-weight: 600; min-width: 0; }
 
   .badge {
     font-family: "JetBrains Mono", monospace;
     font-size: 11px;
+    font-weight: 700;
     letter-spacing: 0.04em;
     text-transform: uppercase;
-    padding: 4px 9px;
+    padding: 5px 11px;
     white-space: nowrap;
     flex-shrink: 0;
-    border: 1px solid;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
   }
-  .badge.live { color: var(--good); border-color: color-mix(in srgb, var(--good) 45%, transparent); }
-  .badge.dev { color: var(--cobalt); border-color: color-mix(in srgb, var(--cobalt) 45%, transparent); }
+  .badge.live { color: var(--live-ink); background: var(--live); }
+  .badge.dev { color: #fff; background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
   .badge.live::before {
     content: "";
     display: inline-block;
-    width: 5px; height: 5px;
+    width: 6px; height: 6px;
     margin-right: 6px;
     border-radius: 50%;
-    background: var(--good);
-    vertical-align: middle;
+    background: var(--live-ink);
     animation: pulse 2.2s ease-out infinite;
   }
   @media (prefers-reduced-motion: reduce) { .badge.live::before { animation: none; } }
@@ -287,8 +327,9 @@
     font-family: "JetBrains Mono", monospace;
     font-size: 11.5px;
     color: var(--muted);
-    border: 1px solid var(--line);
-    padding: 3px 8px;
+    background: color-mix(in srgb, var(--line) 45%, transparent);
+    border-radius: 999px;
+    padding: 4px 10px;
   }
 
   .project-foot {
@@ -301,22 +342,25 @@
   .demo-btn {
     font-family: "JetBrains Mono", monospace;
     font-size: 12.5px;
-    color: var(--panel);
-    background: var(--cobalt);
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
     border: none;
-    padding: 9px 14px;
+    border-radius: 999px;
+    padding: 10px 16px;
     cursor: pointer;
-    transition: opacity .15s ease;
+    transition: transform .15s ease, box-shadow .15s ease;
     display: inline-block;
     text-decoration: none;
   }
-  .demo-btn:hover { opacity: .82; }
+  .demo-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px color-mix(in srgb, var(--accent) 60%, transparent); }
   .demo-btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
 
   .project-link {
     font-family: "JetBrains Mono", monospace;
     font-size: 12.5px;
-    color: var(--cobalt);
+    font-weight: 600;
+    color: var(--accent);
     text-decoration: none;
     width: fit-content;
   }
@@ -328,30 +372,37 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 7px;
+    gap: 8px;
     background: none;
     border: none;
     cursor: pointer;
     color: var(--muted);
     text-decoration: none;
     padding: 0;
-    width: 76px;
+    width: 78px;
   }
   .icon-btn .circle {
-    width: 50px;
-    height: 50px;
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
     background: var(--panel);
     border: 1px solid var(--line);
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: border-color .15s ease, color .15s ease;
+    transition: border-color .15s ease, color .15s ease, transform .15s ease, box-shadow .15s ease;
     color: var(--ink);
   }
   .icon-btn .circle svg { width: 21px; height: 21px; }
-  .icon-btn:hover .circle, .icon-btn:focus-visible .circle { border-color: var(--cobalt); color: var(--cobalt); }
+  .icon-btn:hover .circle, .icon-btn:focus-visible .circle {
+    border-color: transparent;
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    transform: translateY(-3px);
+    box-shadow: 0 12px 22px -12px color-mix(in srgb, var(--accent) 65%, transparent);
+  }
   .icon-btn:focus-visible { outline: none; }
-  .icon-btn:focus-visible .circle { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .icon-btn:focus-visible .circle { outline: 2px solid var(--accent); outline-offset: 2px; }
   .icon-btn .caption { font-family: "JetBrains Mono", monospace; font-size: 10.5px; text-align: center; line-height: 1.3; }
 
   footer {
@@ -359,7 +410,7 @@
     font-family: "JetBrains Mono", monospace;
     font-size: 11.5px;
     text-align: center;
-    padding-top: 12px;
+    padding-top: 14px;
     border-top: 1px solid var(--line);
   }
 
@@ -367,7 +418,7 @@
   .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    background: color-mix(in srgb, #000 60%, transparent);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -384,11 +435,12 @@
   .modal {
     background: var(--panel);
     border: 1px solid var(--line);
+    border-radius: 22px;
     max-width: 560px;
     width: 100%;
     max-height: 85vh;
     overflow-y: auto;
-    padding: 24px;
+    padding: 26px;
     display: flex;
     flex-direction: column;
     gap: 16px;
@@ -401,23 +453,24 @@
   }
 
   .modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
-  .modal-head h3 { font-size: 1.25rem; min-width: 0; font-weight: 500; }
+  .modal-head h3 { font-size: 1.3rem; min-width: 0; font-weight: 600; }
   .modal-close {
-    background: var(--paper);
-    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--line) 50%, transparent);
+    border: none;
+    border-radius: 999px;
     color: var(--muted);
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
     flex-shrink: 0;
     cursor: pointer;
     font-size: 15px;
     line-height: 1;
   }
-  .modal-close:hover { color: var(--ink); border-color: var(--cobalt); }
+  .modal-close:hover { color: #fff; background: linear-gradient(120deg, var(--accent), var(--accent-2)); }
 
   .media-slot {
-    background: var(--paper);
-    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--line) 35%, transparent);
+    border-radius: 16px;
     min-height: 180px;
     display: flex;
     align-items: center;
@@ -427,13 +480,13 @@
     color: var(--muted);
     font-size: 13.5px;
   }
-  .media-slot video { width: 100%; display: block; }
+  .media-slot video { width: 100%; display: block; border-radius: 12px; }
 
   .gallery { display: flex; flex-direction: column; gap: 10px; }
   .gallery-frame {
     position: relative;
-    background: var(--paper);
-    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--line) 35%, transparent);
+    border-radius: 16px;
     overflow: hidden;
     aspect-ratio: 16/10;
     display: flex;
@@ -447,35 +500,38 @@
     transform: translateY(-50%);
     background: color-mix(in srgb, var(--panel) 85%, transparent);
     border: 1px solid var(--line);
+    border-radius: 50%;
     color: var(--ink);
-    width: 32px;
-    height: 32px;
+    width: 34px;
+    height: 34px;
     cursor: pointer;
     font-size: 14px;
     line-height: 1;
   }
-  .gallery-arrow:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .gallery-arrow:hover { border-color: var(--accent); color: var(--accent); }
   .gallery-arrow.prev { left: 10px; }
   .gallery-arrow.next { right: 10px; }
   .gallery-dots { display: flex; justify-content: center; gap: 6px; }
   .gallery-dots button { width: 7px; height: 7px; border-radius: 50%; border: none; background: var(--line); cursor: pointer; padding: 0; }
-  .gallery-dots button.active { background: var(--cobalt); }
+  .gallery-dots button.active { background: var(--accent); }
   .gallery-note { font-size: 12px; color: var(--muted); text-align: center; }
 
   .trial-wrap { position: relative; display: flex; flex-direction: column; gap: 10px; }
   .demo-trigger {
     font-family: "JetBrains Mono", monospace;
     font-size: 12.5px;
-    color: var(--panel);
-    background: var(--cobalt);
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(120deg, var(--accent), var(--accent-2));
     border: none;
-    padding: 10px 14px;
+    border-radius: 999px;
+    padding: 11px 16px;
     cursor: pointer;
     width: fit-content;
     display: inline-block;
     text-decoration: none;
   }
-  .demo-trigger[disabled] { background: var(--paper); color: var(--muted); cursor: not-allowed; }
+  .demo-trigger[disabled] { background: color-mix(in srgb, var(--line) 60%, transparent); color: var(--muted); cursor: not-allowed; }
   .demo-trigger-note { font-size: 12px; color: var(--muted); }
 
   .email-copy-row {
@@ -483,8 +539,8 @@
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-    background: var(--paper);
-    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--line) 35%, transparent);
+    border-radius: 14px;
     padding: 12px 14px;
   }
   .email-value {
@@ -497,44 +553,171 @@
   .email-copy-btn {
     font-family: "JetBrains Mono", monospace;
     font-size: 12px;
-    color: var(--cobalt);
+    font-weight: 600;
+    color: var(--accent);
     background: var(--panel);
     border: 1px solid var(--line);
-    padding: 7px 11px;
+    border-radius: 999px;
+    padding: 7px 12px;
     cursor: pointer;
     flex-shrink: 0;
     transition: border-color .15s ease, color .15s ease;
   }
-  .email-copy-btn:hover { border-color: var(--cobalt); }
+  .email-copy-btn:hover { border-color: var(--accent); }
+
+  /* ---- Terminal hero ---- */
+  .terminal {
+    background: #0c0e18;
+    color: #d7f5e3;
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, #0c0e18);
+    border-radius: 18px;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 13px;
+    line-height: 1.75;
+    padding: 18px 20px 20px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 48px -32px color-mix(in srgb, var(--accent) 55%, transparent);
+  }
+  .terminal-bar { display: flex; gap: 6px; margin-bottom: 12px; }
+  .terminal-bar span { width: 9px; height: 9px; border-radius: 50%; background: color-mix(in srgb, #d7f5e3 30%, transparent); }
+  .terminal-line { white-space: pre-wrap; word-break: break-word; min-height: 1.3em; }
+  .terminal-line .prompt { color: var(--accent-2); }
+  .terminal-line .out { color: #d7f5e3; opacity: .92; }
+  .terminal-cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: #d7f5e3;
+    vertical-align: text-bottom;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .terminal-cursor { animation: none; } }
+
+  /* ---- Live GitHub badge ---- */
+  .live-pulse {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--live-ink);
+    margin-right: 7px;
+    animation: pulse 2.2s ease-out infinite;
+  }
+  @media (prefers-reduced-motion: reduce) { .live-pulse { animation: none; } }
+
+  /* ---- Inline live demo preview ---- */
+  .live-preview {
+    position: relative;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: color-mix(in srgb, var(--line) 35%, transparent);
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    display: block;
+  }
+  .live-preview iframe {
+    width: 166.66%;
+    height: 166.66%;
+    transform: scale(0.6);
+    transform-origin: top left;
+    border: none;
+    display: block;
+    pointer-events: none;
+  }
+  .live-preview-tag {
+    position: absolute;
+    top: 10px; left: 10px;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--live-ink);
+    background: var(--live);
+    border-radius: 999px;
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 6px 14px -6px color-mix(in srgb, var(--live) 70%, transparent);
+  }
+  .live-preview-overlay {
+    position: absolute;
+    inset: 0;
+    background: color-mix(in srgb, #000 6%, transparent);
+    cursor: pointer;
+  }
+
+  /* ---- AI workflow / code snippet ---- */
+  .ai-panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    padding: 24px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .ai-panel p { margin: 0; color: var(--muted); }
+  .ai-panel p strong { color: var(--ink); font-weight: 700; }
+  .code-block {
+    background: #0c0e18;
+    border-radius: 14px;
+    overflow-x: auto;
+    padding: 16px 18px;
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .code-block code { font-family: "JetBrains Mono", ui-monospace, monospace; color: #d6e3e8; white-space: pre; }
+  .code-caption { font-family: "JetBrains Mono", monospace; font-size: 11px; color: var(--muted); }
+  .hljs-keyword, .hljs-title.function_ { color: #8d9bff; }
+  .hljs-string { color: #3fe0d6; }
+  .hljs-comment { color: #7a8095; font-style: italic; }
+  .hljs-number, .hljs-literal { color: #f2b56b; }
+  .hljs-built_in, .hljs-title.class_ { color: #ef9fc4; }
 </style>
+
+<div class="bg-blobs"><span></span><span></span><span></span></div>
 
 <div class="wrap">
 
   <div class="titleblock">
     <span class="status">Disponible para nuevas oportunidades</span>
     <h1>Nicolás Zanini</h1>
-    <p class="role-line">Angular · .NET / C# · SQL — de punta a punta, en producción real</p>
+    <div class="role-row">
+      <span class="role-chip">Angular</span>
+      <span class="role-chip">.NET / C#</span>
+      <span class="role-chip">SQL</span>
+      <span class="role-chip">de punta a punta, en producción real</span>
+    </div>
     <div class="bio">
       <p>
-        Trabajo de forma independiente desde 2025 como único desarrollador de los sistemas que
-        construyo: relevamiento con el cliente, modelado de datos, backend, frontend y despliegue.
-        Antes de programar pasé <strong>ocho años en atención al cliente, ventas y administración</strong>,
-        así que llego a cada proyecto entendiendo el negocio antes de escribir la primera línea de código.
+        Construyo y pongo en producción sistemas de gestión reales, no ejercicios de práctica.
+        Hoy soy el <strong>único desarrollador</strong> detrás de un sistema que una empresa de
+        auxilio mecánico usa todos los días para coordinar su flota y operar con compañías de
+        seguros y asistencias internacionales: lo pensé, lo construí y lo sostengo yo, de punta a
+        punta, desde la conversación con el cliente hasta el sistema corriendo en producción.
       </p>
       <p>
-        Incorporo herramientas de IA (Claude, entre otras) como parte real del flujo de trabajo,
-        no como experimento, para moverme más rápido sin perder calidad de código.
+        Antes de programar pasé <strong>ocho años resolviendo problemas de clientes reales</strong> en
+        atención al cliente, ventas y administración, así que no necesito que me expliquen qué es
+        un negocio: lo entiendo antes de abrir el editor.
       </p>
       <p>
-        Me dedico a construir y mantener sistemas de gestión a medida, de punta a punta: desde la
-        conversación inicial con el cliente hasta el sistema funcionando en producción. Hoy trabajo
-        de forma independiente, pero mi objetivo es sumarme a un equipo de forma estable, para
-        crecer como profesional y seguir incorporando conocimiento junto a otros desarrolladores.
-        Busco oportunidades en Argentina: presencial en Rosario, o remoto en el resto del país.
-        Además, tengo en trámite mi ciudadanía europea, así que también estoy abierto a posibilidades
-        con empresas de Europa.
+        Incorporo IA (Claude, Gemini) como parte real de cómo trabajo, no como truco de marketing:
+        la uso para moverme más rápido, pero el criterio para decidir qué está bien y qué no sigue
+        siendo mío.
+      </p>
+      <p class="cta-line">
+        Busco sumarme a un equipo estable en Rosario, o remoto en el resto de Argentina. Si lo que
+        ves acá te interesa, escribime, te muestro el sistema funcionando en vivo.
       </p>
     </div>
+  </div>
+
+  <div class="terminal reveal" aria-hidden="false">
+    <div class="terminal-bar"><span></span><span></span><span></span></div>
+    <div id="term-lines"></div>
   </div>
 
   <section class="reveal">
@@ -551,6 +734,33 @@
       <span class="tag">REST APIs</span>
       <span class="tag">Python / Flask</span>
       <span class="tag">Git</span>
+    </div>
+  </section>
+
+  <section class="reveal">
+    <p class="eyebrow">cómo trabajo con ia</p>
+    <div class="ai-panel">
+      <p>
+        No uso la IA para que escriba y yo copie sin mirar. La uso como parte del flujo, pero
+        reviso cada resultado antes de darlo por bueno. Un ejemplo real: en Edith, la integración
+        con Gemini dejó de responder de un día para el otro. Diagnostiqué que el modelo que
+        estaba referenciando había quedado desactualizado, corregí la referencia y verifiqué
+        respuesta por respuesta hasta confirmar que el asistente volvía a funcionar de forma
+        estable. <strong>El criterio para detectar la falla y confirmar la solución fue mío</strong>,
+        la IA aceleró la escritura del código.
+      </p>
+      <pre class="code-block"><code class="language-python"># edith/bridge/gemini_client.py — fragmento simplificado
+MODEL_FALLBACK = "gemini-1.5-flash-latest"  # referencia vigente tras el diagnóstico
+
+def ask_gemini(prompt, context):
+    try:
+        response = model.generate_content(prompt, context=context)
+    except ModelDeprecatedError:
+        # el modelo original quedó deprecado: logueo, reintento con el vigente
+        log.warning("modelo desactualizado, reintentando con %s", MODEL_FALLBACK)
+        response = model.generate_content(prompt, context=context, model=MODEL_FALLBACK)
+    return verify_before_return(response)  # nunca devuelvo sin verificar</code></pre>
+      <p class="code-caption">Edith · bridge Python/Flask hacia Gemini</p>
     </div>
   </section>
 
@@ -607,6 +817,7 @@
   </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script>
   var PROJECTS = [
     {
@@ -634,7 +845,8 @@
       desc: "Asistente virtual personal: aplicación web progresiva (PWA) accesible desde escritorio y móvil, con memoria de conversación, generación automática de archivos Excel, automatización de navegador con Playwright e integración con APIs de terceros.",
       tags: ["Python / Flask", "PostgreSQL", "PWA", "Playwright"],
       videoSrc: null,
-      demoUrl: "https://edith-web.onrender.com"
+      demoUrl: "https://edith-web.onrender.com",
+      livePreview: true
     },
     {
       id: "crm-viajes",
@@ -644,7 +856,8 @@
       desc: "Sistema de gestión comercial para una agencia de turismo: catálogo de destinos y paquetes, pasajeros, reservas y seguimiento de contacto, con diseño propio del modelo de datos y construcción incremental por etapas.",
       tags: ["Angular", ".NET / C#", "SQL Server / PostgreSQL"],
       videoSrc: null,
-      demoUrl: "https://crm-viajes-demo.netlify.app"
+      demoUrl: "https://crm-viajes-demo.netlify.app",
+      livePreview: true
     }
   ];
 
@@ -660,8 +873,17 @@
     list.innerHTML = PROJECTS.map(function (p, i) {
       var tags = p.tags.map(function (t) { return "<span>" + t + "</span>"; }).join("");
       var ctaHtml = hasDirectDemo(p)
-        ? '<a class="demo-btn" href="' + p.demoUrl + '" target="_blank" rel="noopener noreferrer">Ver demo ↗</a>'
+        ? '<a class="demo-btn" href="' + p.demoUrl + '" target="_blank" rel="noopener noreferrer">Abrir demo completo ↗</a>'
         : '<button class="demo-btn" data-project="' + p.id + '" type="button">Ver demo</button>';
+      var previewHtml = p.livePreview
+        ? (
+            '<a class="live-preview" href="' + p.demoUrl + '" target="_blank" rel="noopener noreferrer" aria-label="Abrir demo en vivo de ' + p.name + '">' +
+              '<span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>' +
+              '<iframe src="' + p.demoUrl + '" loading="lazy" title="Vista previa de ' + p.name + '" tabindex="-1"></iframe>' +
+              '<span class="live-preview-overlay"></span>' +
+            "</a>"
+          )
+        : "";
       return (
         '<div class="project reveal" style="transition-delay:' + (i * 0.08) + 's">' +
           '<div class="project-head">' +
@@ -669,6 +891,7 @@
             '<span class="badge ' + p.status + '">' + p.statusLabel + "</span>" +
           "</div>" +
           '<p class="desc">' + p.desc + "</p>" +
+          previewHtml +
           '<div class="project-tags">' + tags + "</div>" +
           '<div class="project-foot">' + ctaHtml + "</div>" +
         "</div>"
@@ -831,4 +1054,99 @@
   }
 
   renderProjects();
+  if (window.hljs) { hljs.highlightAll(); }
+
+  /* ---- Terminal typing effect + live GitHub activity ---- */
+  var GITHUB_USER = "NicolasZanini21";
+  var termLines = [
+    { type: "cmd", text: "whoami" },
+    { type: "out", text: "nicolás zanini — full stack dev, rosario (ar)" },
+    { type: "cmd", text: "estado" },
+    { type: "out", text: "disponible para sumarme a un equipo · construyendo en producción desde 2025" },
+    { type: "cmd", text: "github --last-activity" },
+    { type: "out", text: "…", id: "gh-activity" }
+  ];
+
+  function timeAgoEs(dateStr) {
+    var diffMs = Date.now() - new Date(dateStr).getTime();
+    var mins = Math.floor(diffMs / 60000);
+    if (mins < 1) return "hace instantes";
+    if (mins < 60) return "hace " + mins + (mins === 1 ? " minuto" : " minutos");
+    var hours = Math.floor(mins / 60);
+    if (hours < 24) return "hace " + hours + (hours === 1 ? " hora" : " horas");
+    var days = Math.floor(hours / 24);
+    return "hace " + days + (days === 1 ? " día" : " días");
+  }
+
+  function fetchGithubActivity() {
+    return fetch("https://api.github.com/users/" + GITHUB_USER + "/events/public")
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (events) {
+        var push = events.filter(function (e) { return e.type === "PushEvent" && e.payload && e.payload.commits && e.payload.commits.length; })[0];
+        if (push) {
+          var msg = push.payload.commits[push.payload.commits.length - 1].message.split("\n")[0];
+          if (msg.length > 60) msg = msg.slice(0, 57) + "...";
+          return timeAgoEs(push.created_at) + ": commit en " + push.repo.name + " — \"" + msg + "\"";
+        }
+        var any = events[0];
+        if (any) return timeAgoEs(any.created_at) + ": actividad en " + (any.repo ? any.repo.name : "github.com/" + GITHUB_USER);
+        return "repos públicos actualizados en github.com/" + GITHUB_USER;
+      })
+      .catch(function () { return "ver actividad en github.com/" + GITHUB_USER; });
+  }
+
+  function typeTerminal() {
+    var container = document.getElementById("term-lines");
+    if (!container) return;
+    var i = 0;
+
+    function nextLine() {
+      if (i >= termLines.length) return;
+      var spec = termLines[i];
+      var lineEl = document.createElement("div");
+      lineEl.className = "terminal-line";
+      container.appendChild(lineEl);
+
+      if (spec.type === "cmd") {
+        var prompt = document.createElement("span");
+        prompt.className = "prompt";
+        lineEl.appendChild(prompt);
+        var cursor = document.createElement("span");
+        cursor.className = "terminal-cursor";
+        lineEl.appendChild(cursor);
+        var full = "$ " + spec.text;
+        var j = 0;
+        var iv = setInterval(function () {
+          j++;
+          prompt.textContent = full.slice(0, j);
+          if (j >= full.length) {
+            clearInterval(iv);
+            cursor.remove();
+            i++;
+            setTimeout(nextLine, 220);
+          }
+        }, 28);
+      } else {
+        var out = document.createElement("span");
+        out.className = "out";
+        if (spec.id) out.id = spec.id;
+        out.textContent = spec.text;
+        lineEl.appendChild(out);
+        i++;
+        setTimeout(nextLine, 160);
+      }
+    }
+    nextLine();
+  }
+
+  typeTerminal();
+  fetchGithubActivity().then(function (text) {
+    var tries = 0;
+    var iv = setInterval(function () {
+      var el = document.getElementById("gh-activity");
+      tries++;
+      if (el) { el.textContent = text; clearInterval(iv); }
+      if (tries > 100) clearInterval(iv);
+    }, 100);
+  });
 </script>
