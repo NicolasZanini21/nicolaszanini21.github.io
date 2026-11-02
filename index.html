@@ -648,6 +648,16 @@
     cursor: pointer;
   }
 
+  .cold-start-note {
+    font-size: 12px;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--accent-2) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-2) 25%, var(--line));
+    border-radius: 12px;
+    padding: 9px 12px;
+    margin: 0;
+  }
+
   /* ---- AI workflow / code snippet ---- */
   .ai-panel {
     background: var(--panel);
@@ -846,7 +856,8 @@ def ask_gemini(prompt, context):
       tags: ["Python / Flask", "PostgreSQL", "PWA", "Playwright"],
       videoSrc: null,
       demoUrl: "https://edith-web.onrender.com",
-      livePreview: true
+      livePreview: true,
+      coldStartNote: true
     },
     {
       id: "crm-viajes",
@@ -857,7 +868,31 @@ def ask_gemini(prompt, context):
       tags: ["Angular", ".NET / C#", "SQL Server / PostgreSQL"],
       videoSrc: null,
       demoUrl: "https://crm-viajes-demo.netlify.app",
-      livePreview: true
+      livePreview: true,
+      coldStartNote: true
+    },
+    {
+      id: "sistema-bar",
+      name: "Sistema de Gestión para Bar",
+      status: "dev",
+      statusLabel: "En desarrollo",
+      desc: "Sistema multi-rol para la gestión operativa de un bar (mozo, cocina, barra, caja), diseñado con spec-driven development. Flujo de pedidos en tiempo real entre roles con Supabase Realtime, descuento automático de stock por receta al confirmarse cada pedido y permisos por rol con Row Level Security.",
+      tags: ["Next.js", "TypeScript", "Supabase"],
+      videoSrc: null,
+      demoUrl: null,
+      repoUrl: "https://github.com/NicolasZanini21/sistema-bar"
+    },
+    {
+      id: "promoya",
+      name: "PromoYa",
+      status: "dev",
+      statusLabel: "En desarrollo",
+      desc: "App (PWA instalable) que busca y muestra promociones comerciales por rubro en Rosario. Un bot automatizado corre diariamente combinando búsqueda web y un modelo de lenguaje para extraer datos estructurados de cada promoción, sin carga manual. Desplegado en producción con presupuesto $0, usando únicamente capas gratuitas.",
+      tags: ["Next.js", "TypeScript", "Supabase", "Gemini API"],
+      videoSrc: null,
+      demoUrl: "https://promoya-tau.vercel.app",
+      livePreview: true,
+      repoUrl: "https://github.com/NicolasZanini21/promoya"
     }
   ];
 
@@ -884,6 +919,9 @@ def ask_gemini(prompt, context):
             "</a>"
           )
         : "";
+      var coldStartHtml = p.coldStartNote
+        ? '<p class="cold-start-note">⏱ Primera carga lenta: el servidor gratuito se "duerme" por inactividad y puede tardar hasta 1 minuto en responder la primera vez. Si no carga enseguida, dale un minuto.</p>'
+        : "";
       return (
         '<div class="project reveal" style="transition-delay:' + (i * 0.08) + 's">' +
           '<div class="project-head">' +
@@ -892,6 +930,7 @@ def ask_gemini(prompt, context):
           "</div>" +
           '<p class="desc">' + p.desc + "</p>" +
           previewHtml +
+          coldStartHtml +
           '<div class="project-tags">' + tags + "</div>" +
           '<div class="project-foot">' + ctaHtml + "</div>" +
         "</div>"
@@ -970,7 +1009,11 @@ def ask_gemini(prompt, context):
           "</div>"
         );
 
-    body.innerHTML = mediaHtml + trialHtml;
+    var repoHtml = p.repoUrl
+      ? '<a class="project-link" style="display:inline-block;margin-top:8px;" href="' + p.repoUrl + '" target="_blank" rel="noopener noreferrer">Ver código en GitHub →</a>'
+      : "";
+
+    body.innerHTML = mediaHtml + trialHtml + repoHtml;
 
     if (p.screenshots && p.screenshots.length) {
       var idx = 0;
