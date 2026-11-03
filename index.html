@@ -658,6 +658,21 @@
     margin: 0;
   }
 
+  .demo-credentials {
+    font-size: 12px;
+    color: var(--muted);
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .demo-credentials strong { color: var(--ink); font-weight: 600; }
+  .demo-credentials .cred-row { font-family: "JetBrains Mono", monospace; font-size: 11.5px; }
+
   /* ---- AI workflow / code snippet ---- */
   .ai-panel {
     background: var(--panel);
@@ -881,7 +896,14 @@ def ask_gemini(prompt, context):
       videoSrc: null,
       demoUrl: "https://sistema-bar-lac.vercel.app",
       livePreview: true,
-      repoUrl: "https://github.com/NicolasZanini21/sistema-bar"
+      repoUrl: "https://github.com/NicolasZanini21/sistema-bar",
+      demoPassword: "admin123",
+      demoCredentials: [
+        { role: "Admin", email: "admin@sistemabar.com" },
+        { role: "Mozo", email: "mozo@sistemabar.com" },
+        { role: "Cocina", email: "cocina@sistemabar.com" },
+        { role: "Caja", email: "caja@sistemabar.com" }
+      ]
     },
     {
       id: "promoya",
@@ -923,6 +945,16 @@ def ask_gemini(prompt, context):
       var coldStartHtml = p.coldStartNote
         ? '<p class="cold-start-note">⏱ Primera carga lenta: el servidor gratuito se "duerme" por inactividad y puede tardar hasta 1 minuto en responder la primera vez. Si no carga enseguida, dale un minuto.</p>'
         : "";
+      var credentialsHtml = p.demoCredentials
+        ? (
+            '<div class="demo-credentials">' +
+              '<strong>🔑 Usuarios de prueba (contraseña: ' + p.demoPassword + ')</strong>' +
+              p.demoCredentials.map(function (c) {
+                return '<span class="cred-row">' + c.role + ": " + c.email + "</span>";
+              }).join("") +
+            "</div>"
+          )
+        : "";
       return (
         '<div class="project reveal" style="transition-delay:' + (i * 0.08) + 's">' +
           '<div class="project-head">' +
@@ -932,6 +964,7 @@ def ask_gemini(prompt, context):
           '<p class="desc">' + p.desc + "</p>" +
           previewHtml +
           coldStartHtml +
+          credentialsHtml +
           '<div class="project-tags">' + tags + "</div>" +
           '<div class="project-foot">' + ctaHtml + "</div>" +
         "</div>"
