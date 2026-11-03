@@ -166,6 +166,51 @@
   .proj-link { font-family: "JetBrains Mono", monospace; font-size: 12.5px; font-weight: 700; color: var(--accent); margin-top: 2px; cursor: pointer; width: fit-content; }
   .cold-note { font-size: 11.5px; color: var(--muted); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 0; }
 
+  /* live preview embed */
+  .live-preview {
+    position: relative; border: 1px solid var(--line); border-radius: 10px; background: var(--bg);
+    aspect-ratio: 16/9; overflow: hidden; display: block;
+  }
+  .live-preview iframe {
+    width: 166.66%; height: 166.66%; transform: scale(0.6); transform-origin: top left; border: none; display: block; pointer-events: none;
+  }
+  .live-preview-tag {
+    position: absolute; top: 9px; left: 9px; font-family: "JetBrains Mono", monospace; font-size: 10px; font-weight: 700;
+    letter-spacing: 0.04em; text-transform: uppercase; color: #04140b; background: var(--live);
+    border-radius: 999px; padding: 4px 9px; display: flex; align-items: center;
+  }
+  .live-pulse {
+    display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #04140b; margin-right: 6px;
+    animation: livePulse 2.2s ease-out infinite;
+  }
+  @keyframes livePulse {
+    0% { box-shadow: 0 0 0 0 rgba(4,20,11,.55); }
+    70% { box-shadow: 0 0 0 6px rgba(4,20,11,0); }
+    100% { box-shadow: 0 0 0 0 rgba(4,20,11,0); }
+  }
+  @media (prefers-reduced-motion: reduce) { .live-pulse { animation: none; } }
+  .live-preview-overlay { position: absolute; inset: 0; background: color-mix(in srgb, #000 8%, transparent); cursor: pointer; }
+
+  /* gallery modal */
+  .gallery { display: flex; flex-direction: column; gap: 10px; }
+  .gallery-frame {
+    position: relative; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; overflow: hidden;
+    aspect-ratio: 16/10; display: flex; align-items: center; justify-content: center;
+  }
+  .gallery-frame img { width: 100%; height: 100%; object-fit: contain; display: block; background: #fff; }
+  .gallery-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); background: color-mix(in srgb, var(--panel) 90%, transparent);
+    border: 1px solid var(--line); border-radius: 50%; color: var(--ink); width: 32px; height: 32px; cursor: pointer; font-size: 14px; line-height: 1;
+  }
+  .gallery-arrow:hover { border-color: var(--accent); color: var(--accent); }
+  .gallery-arrow.prev { left: 9px; }
+  .gallery-arrow.next { right: 9px; }
+  .gallery-dots { display: flex; justify-content: center; gap: 6px; }
+  .gallery-dots button { width: 7px; height: 7px; border-radius: 50%; border: none; background: var(--line); cursor: pointer; padding: 0; }
+  .gallery-dots button.active { background: var(--accent); }
+  .gallery-note { font-size: 11.5px; color: var(--muted); text-align: center; margin: 0; }
+  .modal-trial-note { font-size: 12.5px; color: var(--muted); margin: 0; }
+
   /* education */
   .edu-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
   @media (max-width: 760px) { .edu-grid { grid-template-columns: 1fr; } }
@@ -385,12 +430,18 @@
         <h3>Auxilio Express</h3>
         <p>Sistema de gestión para una empresa de auxilio mecánico y remolque que opera con compañías de seguros y asistencias internacionales. Administra clientes, servicios y la operación diaria de una flota.</p>
         <div class="proj-tags"><span>Angular</span><span>.NET / C#</span><span>SQL Server</span></div>
-        <span class="proj-link" id="pl-auxilio">Ver detalle →</span>
+        <span class="proj-link" id="pl-auxilio">Ver capturas →</span>
       </div>
       <div class="proj-card" data-build-point>
         <div class="proj-top"><span class="proj-num">02 / 05</span><span class="badge dev">En desarrollo</span></div>
         <h3>Edith</h3>
         <p>Asistente virtual personal: PWA con memoria de conversación, transcripción con Whisper, respuestas con Gemini y automatización de navegador con Playwright.</p>
+        <a class="live-preview" href="https://edith-web.onrender.com" target="_blank" rel="noopener" aria-label="Abrir demo en vivo de Edith">
+          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <iframe src="https://edith-web.onrender.com" loading="lazy" title="Vista previa de Edith" tabindex="-1"></iframe>
+          <span class="live-preview-overlay"></span>
+        </a>
+        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
         <div class="proj-tags"><span>Python / Flask</span><span>PostgreSQL</span><span>PWA</span></div>
         <a class="proj-link" href="https://edith-web.onrender.com" target="_blank" rel="noopener">Ver demo en vivo →</a>
       </div>
@@ -398,22 +449,37 @@
         <div class="proj-top"><span class="proj-num">03 / 05</span><span class="badge dev">En desarrollo</span></div>
         <h3>CRM para agencia de viajes</h3>
         <p>Gestión comercial para agencia de turismo: destinos, paquetes, pasajeros y reservas, con modelado relacional propio.</p>
+        <a class="live-preview" href="https://crm-viajes-demo.netlify.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo del CRM de viajes">
+          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <iframe src="https://crm-viajes-demo.netlify.app" loading="lazy" title="Vista previa del CRM de viajes" tabindex="-1"></iframe>
+          <span class="live-preview-overlay"></span>
+        </a>
+        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
         <div class="proj-tags"><span>Angular</span><span>.NET / C#</span><span>SQL Server / PostgreSQL</span></div>
         <a class="proj-link" href="https://crm-viajes-demo.netlify.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
-        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
       </div>
       <div class="proj-card" data-build-point>
         <div class="proj-top"><span class="proj-num">04 / 05</span><span class="badge dev">En desarrollo</span></div>
         <h3>Sistema de Gestión para Bar</h3>
         <p>Sistema multi-rol (mozo, cocina, barra, caja) con pedidos en tiempo real, descuento automático de stock por receta y permisos por rol con Row Level Security.</p>
+        <a class="live-preview" href="https://sistema-bar-lac.vercel.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo del Sistema de Gestión para Bar">
+          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <iframe src="https://sistema-bar-lac.vercel.app" loading="lazy" title="Vista previa del Sistema de Gestión para Bar" tabindex="-1"></iframe>
+          <span class="live-preview-overlay"></span>
+        </a>
+        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
         <div class="proj-tags"><span>Next.js</span><span>TypeScript</span><span>Supabase</span></div>
         <a class="proj-link" href="https://sistema-bar-lac.vercel.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
-        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
       </div>
       <div class="proj-card" data-build-point>
         <div class="proj-top"><span class="proj-num">05 / 05</span><span class="badge dev">En desarrollo</span></div>
         <h3>PromoYa</h3>
         <p>App que busca y muestra promociones por rubro en Rosario, con un bot diario que extrae datos combinando búsqueda web y un LLM. Desplegado con presupuesto $0.</p>
+        <a class="live-preview" href="https://promoya-tau.vercel.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo de PromoYa">
+          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <iframe src="https://promoya-tau.vercel.app" loading="lazy" title="Vista previa de PromoYa" tabindex="-1"></iframe>
+          <span class="live-preview-overlay"></span>
+        </a>
         <div class="proj-tags"><span>Next.js</span><span>Supabase</span><span>Gemini API</span></div>
         <a class="proj-link" href="https://promoya-tau.vercel.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
       </div>
@@ -445,23 +511,17 @@
 
   <section id="contacto" style="border-bottom: none;">
     <div class="cta-band">
-      <p class="eyebrow" style="margin-bottom:0;">¿Hablamos?</p>
-      <h2 class="display">Construyamos algo juntos.</h2>
-      <p>Escribime cuando quieras, charlamos con calma.</p>
+      <h2 class="display">¿Hablamos?</h2>
+      <p>Estoy disponible para oportunidades o proyectos que quieras realizar.</p>
       <div class="hero-ctas" style="margin:0;">
         <button class="btn-primary" type="button" id="btn-email-2">Escribime ↗</button>
         <a class="btn-outline" id="btn-whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
-        <a class="btn-outline" href="cv-nicolas-zanini.pdf" download>Descargar CV ↓</a>
       </div>
     </div>
   </section>
 
-  <footer>
+  <footer style="justify-content:center;">
     <span class="fnote">© 2026 Nicolás Zanini · Rosario, Argentina</span>
-    <div class="social-row">
-      <a href="https://github.com/NicolasZanini21" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.36.81 1.1.81 2.22v3.29c0 .32.21.69.82.58C20.56 22.1 24 17.6 24 12.3 24 5.67 18.63.3 12 .3z"/></svg></a>
-      <a href="https://linkedin.com/in/nicolaszanini" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.07 2.07 0 1 1 0-4.13 2.07 2.07 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
-    </div>
   </footer>
 
 </div>
@@ -523,17 +583,44 @@
   document.getElementById("btn-email").addEventListener("click", openEmailModal);
   document.getElementById("btn-email-2").addEventListener("click", openEmailModal);
 
-  function openInfoModal(title, html) {
-    document.getElementById("modal-title").textContent = title;
-    document.getElementById("modal-body").innerHTML = html;
+  var AUXILIO_SCREENSHOTS = ["assets/auxilio-1.jpg", "assets/auxilio-2.jpg", "assets/auxilio-3.jpg", "assets/auxilio-4.jpg"];
+
+  function openAuxilioModal() {
+    document.getElementById("modal-title").textContent = "Auxilio Express";
+    var body = document.getElementById("modal-body");
+    body.innerHTML =
+      '<div class="gallery" id="gallery">' +
+        '<div class="gallery-frame">' +
+          '<img id="gallery-img" src="' + AUXILIO_SCREENSHOTS[0] + '" alt="Captura de Auxilio Express">' +
+          '<button class="gallery-arrow prev" id="gallery-prev" type="button" aria-label="Anterior">‹</button>' +
+          '<button class="gallery-arrow next" id="gallery-next" type="button" aria-label="Siguiente">›</button>' +
+        "</div>" +
+        '<div class="gallery-dots" id="gallery-dots"></div>' +
+        '<p class="gallery-note">Capturas con datos de prueba cargados por mí, no son clientes reales.</p>' +
+      "</div>" +
+      '<p class="modal-trial-note" style="margin-top:14px;">Sistema en producción para un cliente real; por confidencialidad no tiene demo pública. Si querés, te lo muestro funcionando en una videollamada.</p>';
+
+    var idx = 0;
+    var imgEl = document.getElementById("gallery-img");
+    var dotsEl = document.getElementById("gallery-dots");
+    dotsEl.innerHTML = AUXILIO_SCREENSHOTS.map(function (_, i) {
+      return '<button data-i="' + i + '" class="' + (i === 0 ? "active" : "") + '" aria-label="Captura ' + (i + 1) + '"></button>';
+    }).join("");
+
+    function show(i) {
+      idx = (i + AUXILIO_SCREENSHOTS.length) % AUXILIO_SCREENSHOTS.length;
+      imgEl.src = AUXILIO_SCREENSHOTS[idx];
+      dotsEl.querySelectorAll("button").forEach(function (b, bi) { b.classList.toggle("active", bi === idx); });
+    }
+    document.getElementById("gallery-prev").addEventListener("click", function () { show(idx - 1); });
+    document.getElementById("gallery-next").addEventListener("click", function () { show(idx + 1); });
+    dotsEl.querySelectorAll("button").forEach(function (b) {
+      b.addEventListener("click", function () { show(parseInt(this.getAttribute("data-i"), 10)); });
+    });
+
     openModalBackdrop();
   }
-  document.getElementById("pl-auxilio").addEventListener("click", function () {
-    openInfoModal(
-      "Auxilio Express",
-      '<p style="color:var(--muted);margin:0;font-size:13.5px;line-height:1.6;">Sistema en producción para un cliente real de auxilio mecánico. Por confidencialidad no tiene demo pública. Si querés, te muestro el sistema funcionando en una videollamada.</p>'
-    );
-  });
+  document.getElementById("pl-auxilio").addEventListener("click", openAuxilioModal);
 
   /* ---- Multi-agent build effect ---- */
   var AGENT_PALETTE = ["#2fd4ee", "#2fe07f", "#eef3fb", "#f2b56b", "#8793ad"];
