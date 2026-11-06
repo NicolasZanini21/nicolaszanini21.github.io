@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" id="html-root">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,6 +44,16 @@
     font-family: "JetBrains Mono", monospace; font-size: 12.5px; font-weight: 700; color: var(--accent-ink);
     background: var(--accent); border-radius: 999px; padding: 9px 16px; display: inline-flex; align-items: center; gap: 6px;
   }
+  .nav-right { display: flex; align-items: center; gap: 14px; }
+  .lang-switch { display: flex; gap: 6px; }
+  .lang-switch button {
+    width: 34px; height: 34px; border-radius: 8px; background: var(--panel); border: 1px solid var(--line);
+    display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: .45; padding: 0;
+    transition: opacity .15s ease, border-color .15s ease;
+  }
+  .lang-switch button svg { width: 20px; height: 14px; border-radius: 2px; display: block; }
+  .lang-switch button:hover { opacity: .85; }
+  .lang-switch button.active { opacity: 1; border-color: var(--accent); }
 
   /* ---- hero ---- */
   .hero {
@@ -156,6 +166,7 @@
   .badge { font-family: "JetBrains Mono", monospace; font-size: 10.5px; font-weight: 700; text-transform: uppercase; border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
   .badge.live { background: color-mix(in srgb, var(--live) 16%, transparent); color: var(--live); }
   .badge.dev { background: color-mix(in srgb, var(--accent) 16%, transparent); color: var(--accent); }
+  .badge.wip-live { background: color-mix(in srgb, var(--live) 16%, transparent); color: var(--live); }
   .proj-card h3 { font-family: "Sora", sans-serif; font-size: 1.15rem; margin: 0; }
   .proj-card p { color: var(--muted); font-size: 13.5px; line-height: 1.6; margin: 0; }
   .proj-tags { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -321,13 +332,27 @@
   <div class="wrap nav-row">
     <div class="logo"><span class="mark">NZ</span> Nicolás Zanini</div>
     <nav class="nav-links">
-      <a href="#inicio">Inicio</a>
+      <a href="#inicio" data-i18n="nav-inicio">Inicio</a>
       <a href="#stack">Stack</a>
-      <a href="#experiencia">Experiencia</a>
-      <a href="#proyectos">Proyectos</a>
-      <a href="#contacto">Contacto</a>
+      <a href="#experiencia" data-i18n="nav-experiencia">Experiencia</a>
+      <a href="#proyectos" data-i18n="nav-proyectos">Proyectos</a>
+      <a href="#contacto" data-i18n="nav-contacto">Contacto</a>
     </nav>
-    <a class="nav-cta" href="#contacto">Hablemos ↗</a>
+    <div class="nav-right">
+      <div class="lang-switch" role="group" aria-label="Idioma / Language">
+        <button type="button" id="lang-es" class="active" aria-label="Español" title="Español">
+          <svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg"><rect width="30" height="20" fill="#75AADB"/><rect y="6.67" width="30" height="6.67" fill="#fff"/><circle cx="15" cy="10" r="2.6" fill="#F6B40E" stroke="#85340A" stroke-width=".4"/></svg>
+        </button>
+        <button type="button" id="lang-en" aria-label="English" title="English">
+          <svg viewBox="0 0 30 20" xmlns="http://www.w3.org/2000/svg">
+            <rect width="30" height="20" fill="#fff"/>
+            <g fill="#B22234"><rect width="30" height="1.54" y="0"/><rect width="30" height="1.54" y="3.08"/><rect width="30" height="1.54" y="6.15"/><rect width="30" height="1.54" y="9.23"/><rect width="30" height="1.54" y="12.31"/><rect width="30" height="1.54" y="15.38"/><rect width="30" height="1.54" y="18.46"/></g>
+            <rect width="12" height="10.77" fill="#3C3B6E"/>
+          </svg>
+        </button>
+      </div>
+      <a class="nav-cta" href="#contacto" data-i18n="nav-cta">Hablemos ↗</a>
+    </div>
   </div>
 </header>
 
@@ -335,13 +360,13 @@
 
   <div class="hero" id="inicio">
     <div>
-      <span class="status">● Búsqueda activa</span>
-      <h1 class="display">Hola, soy Nicolás.<br>Full Stack <span class="accent">Developer.</span></h1>
-      <p class="role">Angular · .NET / C# · SQL Server · PostgreSQL · Rosario, Argentina</p>
-      <p class="lede">Desde abril de 2025 trabajo en Patagonia Chain como <strong style="color:var(--ink);">único desarrollador</strong> de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API, frontend, despliegue y soporte. Antes de programar pasé <strong style="color:var(--ink);">ocho años en atención al cliente, ventas y administración</strong>. Hoy eso me sirve para traducir lo que un cliente necesita en requerimientos técnicos concretos.</p>
+      <span class="status" data-i18n="status">● Búsqueda activa</span>
+      <h1 class="display" data-i18n="h1">Hola, soy Nicolás.<br>Full Stack <span class="accent">Developer.</span></h1>
+      <p class="role" data-i18n="role">Angular · .NET / C# · SQL Server · PostgreSQL · Rosario, Argentina</p>
+      <p class="lede" data-i18n="lede">Desde abril de 2025 trabajo en Patagonia Chain como <strong style="color:var(--ink);">único desarrollador</strong> de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API, frontend, despliegue y soporte. Antes de programar pasé <strong style="color:var(--ink);">ocho años en atención al cliente, ventas y administración</strong>. Hoy eso me sirve para traducir lo que un cliente necesita en requerimientos técnicos concretos.</p>
       <div class="hero-ctas">
-        <a class="btn-primary" href="#proyectos">Ver proyectos ↗</a>
-        <a class="btn-outline" href="cv-nicolas-zanini.pdf" download>Descargar CV ↓</a>
+        <a class="btn-primary" href="#proyectos" data-i18n="cta-proyectos">Ver proyectos ↗</a>
+        <a class="btn-outline" href="cv-nicolas-zanini.pdf" download id="cv-download" data-i18n="cta-cv">Descargar CV ↓</a>
       </div>
       <div class="social-row">
         <a href="https://github.com/NicolasZanini21" target="_blank" rel="noopener" aria-label="GitHub"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3C5.37.3 0 5.67 0 12.3c0 5.3 3.44 9.8 8.2 11.38.6.1.82-.26.82-.58v-2.04c-3.34.72-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.08-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.49 1 .11-.78.42-1.3.76-1.6-2.66-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23.96-.27 1.98-.4 3-.41 1.02 0 2.04.14 3 .41 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.24 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.62-5.48 5.92.43.36.81 1.1.81 2.22v3.29c0 .32.21.69.82.58C20.56 22.1 24 17.6 24 12.3 24 5.67 18.63.3 12 .3z"/></svg></a>
@@ -352,17 +377,17 @@
 
     <div class="hero-visual">
       <div class="stat-float">
-        <div class="stat"><b>1</b><span>Sistema en producción</span></div>
-        <div class="stat"><b>8+</b><span>Años con clientes reales</span></div>
-        <div class="stat"><b>5</b><span>Proyectos shippeados</span></div>
-        <div class="stat"><b>100%</b><span>Revisado por mí</span></div>
+        <div class="stat"><b>1</b><span data-i18n="stat1">Sistema en producción</span></div>
+        <div class="stat"><b>8+</b><span data-i18n="stat2">Años con clientes reales</span></div>
+        <div class="stat"><b>5</b><span data-i18n="stat3">Proyectos shippeados</span></div>
+        <div class="stat"><b>100%</b><span data-i18n="stat4">Revisado por mí</span></div>
       </div>
       <div class="term-card">
         <div class="term-bar"><span></span><span></span><span></span></div>
         <div><span class="prompt">$</span> whoami</div>
         <div class="out">nicolás zanini · full stack dev · rosario (ar)</div>
-        <div><span class="prompt">$</span> estado</div>
-        <div class="out">disponible · construyendo en producción desde 2025</div>
+        <div><span class="prompt">$</span> <span data-i18n="term-estado-label">estado</span></div>
+        <div class="out" data-i18n="term-estado-out">disponible · construyendo en producción desde 2025</div>
         <div><span class="prompt">$</span> stack --principal</div>
         <div class="out">angular · .net/c# · sql server · postgresql</div>
       </div>
@@ -371,7 +396,7 @@
 
   <section id="stack">
     <div class="sec-head">
-      <div><p class="eyebrow">Mi expertise</p><h2 class="display">Stack & Tecnologías</h2></div>
+      <div><p class="eyebrow" data-i18n="stack-eyebrow">Mi expertise</p><h2 class="display" data-i18n="stack-h2">Stack & Tecnologías</h2></div>
     </div>
     <div class="stack-groups">
       <div class="stack-card">
@@ -387,15 +412,15 @@
         </div>
       </div>
       <div class="stack-card">
-        <div class="stack-card-head"><span class="stack-dot"></span>Bases de datos</div>
+        <div class="stack-card-head"><span class="stack-dot"></span><span data-i18n="stack-db">Bases de datos</span></div>
         <div class="stack-tags">
-          <span>SQL Server</span><span>PostgreSQL</span><span>Supabase</span><span>Modelado relacional</span>
+          <span>SQL Server</span><span>PostgreSQL</span><span>Supabase</span><span data-i18n="stack-modelado">Modelado relacional</span>
         </div>
       </div>
       <div class="stack-card">
-        <div class="stack-card-head"><span class="stack-dot"></span>Otras</div>
+        <div class="stack-card-head"><span class="stack-dot"></span><span data-i18n="stack-otras">Otras</span></div>
         <div class="stack-tags">
-          <span>Python / Flask</span><span>Gemini API</span><span>Git</span><span>GitHub</span><span>Visual Studio</span><span>VS Code</span><span>Claude (IA)</span>
+          <span>Python / Flask</span><span>Gemini API</span><span>Git</span><span>GitHub</span><span>Visual Studio</span><span>VS Code</span><span data-i18n="stack-claude">Claude (IA)</span>
         </div>
       </div>
     </div>
@@ -403,119 +428,119 @@
 
   <section id="experiencia">
     <div class="sec-head">
-      <div><p class="eyebrow">Trayectoria</p><h2 class="display">Experiencia</h2></div>
+      <div><p class="eyebrow" data-i18n="exp-eyebrow">Trayectoria</p><h2 class="display" data-i18n="exp-h2">Experiencia</h2></div>
     </div>
     <div class="exp-card">
       <div class="exp-head">
-        <div><h3>Desarrollador Full Stack</h3><span class="exp-company">Patagonia Chain</span></div>
-        <span class="exp-meta">Desde abril 2025 · Rosario (remoto/híbrido)</span>
+        <div><h3 data-i18n="exp-role">Desarrollador Full Stack</h3><span class="exp-company">Patagonia Chain</span></div>
+        <span class="exp-meta" data-i18n="exp-meta">Desde abril 2025 · Rosario (remoto/híbrido)</span>
       </div>
       <ul class="exp-list">
-        <li><strong>Único desarrollador</strong> a cargo de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API y frontend, despliegue y mantenimiento evolutivo.</li>
-        <li>Diseño e implementación de APIs REST con ASP.NET Core; modelado de bases de datos en SQL Server y PostgreSQL con Entity Framework como ORM.</li>
-        <li class="sub"><b>Auxilio Express:</b> sistema de gestión de clientes, expedientes, choferes, móviles y cálculo de costos, con exportación a Excel. <strong>En producción</strong>, con mantenimiento activo.</li>
-        <li class="sub"><b>Digno Bar:</b> carta digital interactiva desarrollada íntegramente (Angular + .NET). <strong>En producción</strong>, con mantenimiento evolutivo.</li>
+        <li data-i18n="exp-li1"><strong>Único desarrollador</strong> a cargo de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API y frontend, despliegue y mantenimiento evolutivo.</li>
+        <li data-i18n="exp-li2">Diseño e implementación de APIs REST con ASP.NET Core; modelado de bases de datos en SQL Server y PostgreSQL con Entity Framework como ORM.</li>
+        <li class="sub" data-i18n="exp-li3"><b>Auxilio Express:</b> sistema de gestión de clientes, expedientes, choferes, móviles y cálculo de costos, con exportación a Excel. <strong>En producción</strong>, con mantenimiento activo.</li>
+        <li class="sub" data-i18n="exp-li4"><b>Digno Bar:</b> carta digital interactiva desarrollada íntegramente (Angular + .NET). <strong>En producción</strong>, con mantenimiento evolutivo.</li>
       </ul>
     </div>
   </section>
 
   <section id="proyectos">
     <div class="sec-head">
-      <div><p class="eyebrow">Proyectos personales</p><h2 class="display">Lo que construí</h2></div>
-      <a class="sec-link" href="https://github.com/NicolasZanini21" target="_blank" rel="noopener">Ver todo en GitHub →</a>
+      <div><p class="eyebrow" data-i18n="proj-eyebrow">Proyectos personales</p><h2 class="display" data-i18n="proj-h2">Lo que construí</h2></div>
+      <a class="sec-link" href="https://github.com/NicolasZanini21" target="_blank" rel="noopener" data-i18n="proj-seclink">Ver todo en GitHub →</a>
     </div>
     <div class="proj-grid build-stage" id="stage-projects">
       <div class="proj-card" data-build-point>
-        <div class="proj-top"><span class="proj-num">01 / 05</span><span class="badge live">● En producción</span></div>
+        <div class="proj-top"><span class="proj-num">01 / 05</span><span class="badge live" data-i18n="badge-auxilio">● En producción</span></div>
         <h3>Auxilio Express</h3>
-        <p>Sistema de gestión para una empresa de auxilio mecánico y remolque que opera con compañías de seguros y asistencias internacionales. Administra clientes, servicios y la operación diaria de una flota.</p>
+        <p data-i18n="p-auxilio">Sistema de gestión para una empresa de auxilio mecánico y remolque que opera con compañías de seguros y asistencias internacionales. Administra clientes, servicios y la operación diaria de una flota.</p>
         <div class="proj-tags"><span>Angular</span><span>.NET / C#</span><span>SQL Server</span></div>
-        <span class="proj-link" id="pl-auxilio">Ver capturas →</span>
+        <span class="proj-link" id="pl-auxilio" data-i18n="link-capturas">Ver capturas →</span>
       </div>
       <div class="proj-card" data-build-point>
-        <div class="proj-top"><span class="proj-num">02 / 05</span><span class="badge dev">En desarrollo</span></div>
+        <div class="proj-top"><span class="proj-num">02 / 05</span><span class="badge wip-live" data-i18n="badge-v1">● v1 en vivo</span></div>
         <h3>Edith</h3>
-        <p>Asistente virtual personal: PWA con memoria de conversación, transcripción con Whisper, respuestas con Gemini y automatización de navegador con Playwright.</p>
+        <p data-i18n="p-edith">Asistente virtual con voz propia. Diseñé el pipeline de IA completo — Whisper para transcribir, Gemini para razonar y responder, Playwright para ejecutar acciones en el navegador — y el sistema de memoria conversacional en PostgreSQL para que recuerde contexto entre sesiones. PWA instalable.</p>
         <a class="live-preview" href="https://edith-web.onrender.com" target="_blank" rel="noopener" aria-label="Abrir demo en vivo de Edith">
-          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <span class="live-preview-tag"><span class="live-pulse"></span><span data-i18n="live-now">En vivo ahora</span></span>
           <iframe src="https://edith-web.onrender.com" loading="lazy" title="Vista previa de Edith" tabindex="-1"></iframe>
           <span class="live-preview-overlay"></span>
         </a>
-        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
+        <p class="cold-note" data-i18n="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
         <div class="proj-tags"><span>Python / Flask</span><span>PostgreSQL</span><span>PWA</span></div>
-        <a class="proj-link" href="https://edith-web.onrender.com" target="_blank" rel="noopener">Ver demo en vivo →</a>
+        <a class="proj-link" href="https://edith-web.onrender.com" target="_blank" rel="noopener" data-i18n="link-demo">Ver demo en vivo →</a>
       </div>
       <div class="proj-card" data-build-point>
-        <div class="proj-top"><span class="proj-num">03 / 05</span><span class="badge dev">En desarrollo</span></div>
-        <h3>CRM para agencia de viajes</h3>
-        <p>Gestión comercial para agencia de turismo: destinos, paquetes, pasajeros y reservas, con modelado relacional propio.</p>
+        <div class="proj-top"><span class="proj-num">03 / 05</span><span class="badge wip-live" data-i18n="badge-v1">● v1 en vivo</span></div>
+        <h3 data-i18n="h3-crm">CRM para agencia de viajes</h3>
+        <p data-i18n="p-crm">Gestión comercial para agencia de turismo: destinos, paquetes, pasajeros y reservas, con modelado relacional propio.</p>
         <a class="live-preview" href="https://crm-viajes-demo.netlify.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo del CRM de viajes">
-          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <span class="live-preview-tag"><span class="live-pulse"></span><span data-i18n="live-now">En vivo ahora</span></span>
           <iframe src="https://crm-viajes-demo.netlify.app" loading="lazy" title="Vista previa del CRM de viajes" tabindex="-1"></iframe>
           <span class="live-preview-overlay"></span>
         </a>
-        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
+        <p class="cold-note" data-i18n="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
         <div class="proj-tags"><span>Angular</span><span>.NET / C#</span><span>SQL Server / PostgreSQL</span></div>
-        <a class="proj-link" href="https://crm-viajes-demo.netlify.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
+        <a class="proj-link" href="https://crm-viajes-demo.netlify.app" target="_blank" rel="noopener" data-i18n="link-demo">Ver demo en vivo →</a>
       </div>
       <div class="proj-card" data-build-point>
-        <div class="proj-top"><span class="proj-num">04 / 05</span><span class="badge dev">En desarrollo</span></div>
-        <h3>Sistema de Gestión para Bar</h3>
-        <p>Sistema multi-rol (mozo, cocina, barra, caja) con pedidos en tiempo real, descuento automático de stock por receta y permisos por rol con Row Level Security.</p>
+        <div class="proj-top"><span class="proj-num">04 / 05</span><span class="badge wip-live" data-i18n="badge-v1">● v1 en vivo</span></div>
+        <h3 data-i18n="h3-bar">Sistema de Gestión para Bar</h3>
+        <p data-i18n="p-bar">Sistema multi-rol (mozo, cocina, barra, caja) con pedidos en tiempo real, descuento automático de stock por receta y permisos por rol con Row Level Security.</p>
         <a class="live-preview" href="https://sistema-bar-lac.vercel.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo del Sistema de Gestión para Bar">
-          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <span class="live-preview-tag"><span class="live-pulse"></span><span data-i18n="live-now">En vivo ahora</span></span>
           <iframe src="https://sistema-bar-lac.vercel.app" loading="lazy" title="Vista previa del Sistema de Gestión para Bar" tabindex="-1"></iframe>
           <span class="live-preview-overlay"></span>
         </a>
-        <p class="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
-        <p class="cold-note">👤 Al entrar, usá el botón "Ver demo": accede con una cuenta de ejemplo, sin necesidad de pedir usuario ni contraseña.</p>
+        <p class="cold-note" data-i18n="cold-note">⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.</p>
+        <p class="cold-note" data-i18n="cold-note-bar">👤 Al entrar, usá el botón "Ver demo": accede con una cuenta de ejemplo, sin necesidad de pedir usuario ni contraseña.</p>
         <div class="proj-tags"><span>Next.js</span><span>TypeScript</span><span>Supabase</span></div>
-        <a class="proj-link" href="https://sistema-bar-lac.vercel.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
+        <a class="proj-link" href="https://sistema-bar-lac.vercel.app" target="_blank" rel="noopener" data-i18n="link-demo">Ver demo en vivo →</a>
       </div>
       <div class="proj-card" data-build-point>
-        <div class="proj-top"><span class="proj-num">05 / 05</span><span class="badge dev">En desarrollo</span></div>
+        <div class="proj-top"><span class="proj-num">05 / 05</span><span class="badge wip-live" data-i18n="badge-v1">● v1 en vivo</span></div>
         <h3>PromoYa</h3>
-        <p>App que busca y muestra promociones por rubro en Rosario, con un bot diario que extrae datos combinando búsqueda web y un LLM. Desplegado con presupuesto $0.</p>
+        <p data-i18n="p-promoya">App que centraliza promociones por rubro en Rosario. Diseñé un bot diario que combina búsqueda web con un LLM para extraer y estructurar los datos de las promos automáticamente, en vez de scraping rígido por sitio. Desplegado con presupuesto $0.</p>
         <a class="live-preview" href="https://promoya-tau.vercel.app" target="_blank" rel="noopener" aria-label="Abrir demo en vivo de PromoYa">
-          <span class="live-preview-tag"><span class="live-pulse"></span>En vivo ahora</span>
+          <span class="live-preview-tag"><span class="live-pulse"></span><span data-i18n="live-now">En vivo ahora</span></span>
           <iframe src="https://promoya-tau.vercel.app" loading="lazy" title="Vista previa de PromoYa" tabindex="-1"></iframe>
           <span class="live-preview-overlay"></span>
         </a>
         <div class="proj-tags"><span>Next.js</span><span>Supabase</span><span>Gemini API</span></div>
-        <a class="proj-link" href="https://promoya-tau.vercel.app" target="_blank" rel="noopener">Ver demo en vivo →</a>
+        <a class="proj-link" href="https://promoya-tau.vercel.app" target="_blank" rel="noopener" data-i18n="link-demo">Ver demo en vivo →</a>
       </div>
     </div>
   </section>
 
   <section id="formacion">
     <div class="sec-head">
-      <div><p class="eyebrow">Formación</p><h2 class="display">Estudios</h2></div>
+      <div><p class="eyebrow" data-i18n="edu-eyebrow">Formación</p><h2 class="display" data-i18n="edu-h2">Estudios</h2></div>
     </div>
     <div class="edu-grid">
       <div class="edu-card">
-        <h4>Curso Full Stack Intensivo</h4>
+        <h4 data-i18n="edu1-h4">Curso Full Stack Intensivo</h4>
         <span class="edu-sub">Instituto CCTI, Buenos Aires</span>
-        <span class="edu-meta">2022 · 6 meses</span>
+        <span class="edu-meta" data-i18n="edu1-meta">2022 · 6 meses</span>
       </div>
       <div class="edu-card">
-        <h4>Secundario completo</h4>
-        <span class="edu-sub">Bachiller en Turismo, Escuela Normal N° 2</span>
+        <h4 data-i18n="edu2-h4">Secundario completo</h4>
+        <span class="edu-sub" data-i18n="edu2-sub">Bachiller en Turismo, Escuela Normal N° 2</span>
         <span class="edu-meta">2016</span>
       </div>
     </div>
     <div class="lang-row">
-      <span>Español nativo</span>
-      <span>Inglés: lectura técnica</span>
-      <span>Licencia de conducir B1</span>
+      <span data-i18n="lang1">Español nativo</span>
+      <span data-i18n="lang2">Inglés: lectura técnica</span>
+      <span data-i18n="lang3">Licencia de conducir B1</span>
     </div>
   </section>
 
   <section id="contacto" style="border-bottom: none;">
     <div class="cta-band">
-      <h2 class="display">¿Hablamos?</h2>
-      <p>Estoy disponible para oportunidades o proyectos que quieras realizar.</p>
+      <h2 class="display" data-i18n="contact-h2">¿Hablamos?</h2>
+      <p data-i18n="contact-p">Estoy disponible para oportunidades o proyectos que quieras realizar.</p>
       <div class="hero-ctas" style="margin:0;">
-        <button class="btn-primary" type="button" id="btn-email-2">Escribime ↗</button>
+        <button class="btn-primary" type="button" id="btn-email-2" data-i18n="contact-btn-email">Escribime ↗</button>
         <a class="btn-outline" id="btn-whatsapp" href="#" target="_blank" rel="noopener">WhatsApp</a>
       </div>
     </div>
@@ -538,6 +563,98 @@
 </div>
 
 <script>
+  /* ---- i18n ---- */
+  var I18N = {
+    "nav-inicio": { es: "Inicio", en: "Home" },
+    "nav-experiencia": { es: "Experiencia", en: "Experience" },
+    "nav-proyectos": { es: "Proyectos", en: "Projects" },
+    "nav-contacto": { es: "Contacto", en: "Contact" },
+    "nav-cta": { es: "Hablemos ↗", en: "Let's talk ↗" },
+    "status": { es: "● Búsqueda activa", en: "● Actively looking" },
+    "h1": { es: 'Hola, soy Nicolás.<br>Full Stack <span class="accent">Developer.</span>', en: 'Hi, I\'m Nicolás.<br>Full Stack <span class="accent">Developer.</span>' },
+    "role": { es: "Angular · .NET / C# · SQL Server · PostgreSQL · Rosario, Argentina", en: "Angular · .NET / C# · SQL Server · PostgreSQL · Rosario, Argentina" },
+    "lede": {
+      es: 'Desde abril de 2025 trabajo en Patagonia Chain como <strong style="color:var(--ink);">único desarrollador</strong> de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API, frontend, despliegue y soporte. Antes de programar pasé <strong style="color:var(--ink);">ocho años en atención al cliente, ventas y administración</strong>. Hoy eso me sirve para traducir lo que un cliente necesita en requerimientos técnicos concretos.',
+      en: 'Since April 2025 I\'ve worked at Patagonia Chain as the <strong style="color:var(--ink);">sole developer</strong> for my assigned systems: client requirements gathering, database modeling, API and frontend development, deployment, and support. Before moving into development I spent <strong style="color:var(--ink);">eight years in customer service, sales, and admin</strong>. That now helps me translate what a client actually needs into concrete technical requirements.'
+    },
+    "cta-proyectos": { es: "Ver proyectos ↗", en: "See projects ↗" },
+    "cta-cv": { es: "Descargar CV ↓", en: "Download résumé ↓" },
+    "stat1": { es: "Sistema en producción", en: "System in production" },
+    "stat2": { es: "Años con clientes reales", en: "Years with real clients" },
+    "stat3": { es: "Proyectos shippeados", en: "Projects shipped" },
+    "stat4": { es: "Revisado por mí", en: "Reviewed by me" },
+    "term-estado-label": { es: "estado", en: "status" },
+    "term-estado-out": { es: "disponible · construyendo en producción desde 2025", en: "available · shipping to production since 2025" },
+    "stack-eyebrow": { es: "Mi expertise", en: "My expertise" },
+    "stack-h2": { es: "Stack & Tecnologías", en: "Stack & Technologies" },
+    "stack-db": { es: "Bases de datos", en: "Databases" },
+    "stack-modelado": { es: "Modelado relacional", en: "Relational modeling" },
+    "stack-otras": { es: "Otras", en: "Other" },
+    "stack-claude": { es: "Claude (IA)", en: "Claude (AI)" },
+    "exp-eyebrow": { es: "Trayectoria", en: "Background" },
+    "exp-h2": { es: "Experiencia", en: "Experience" },
+    "exp-role": { es: "Desarrollador Full Stack", en: "Full Stack Developer" },
+    "exp-meta": { es: "Desde abril 2025 · Rosario (remoto/híbrido)", en: "Since April 2025 · Rosario (remote/hybrid)" },
+    "exp-li1": { es: "<strong>Único desarrollador</strong> a cargo de los sistemas asignados: relevamiento con el cliente, modelado de base de datos, API y frontend, despliegue y mantenimiento evolutivo.", en: "<strong>Sole developer</strong> responsible for assigned systems: client requirements gathering, database modeling, API and frontend development, deployment, and ongoing maintenance." },
+    "exp-li2": { es: "Diseño e implementación de APIs REST con ASP.NET Core; modelado de bases de datos en SQL Server y PostgreSQL con Entity Framework como ORM.", en: "Designed and implemented REST APIs with ASP.NET Core; modeled databases in SQL Server and PostgreSQL using Entity Framework as the ORM." },
+    "exp-li3": { es: "<b>Auxilio Express:</b> sistema de gestión de clientes, expedientes, choferes, móviles y cálculo de costos, con exportación a Excel. <strong>En producción</strong>, con mantenimiento activo.", en: "<b>Auxilio Express:</b> client, case-file, driver, and vehicle management system with cost calculation and Excel export. <strong>In production</strong>, with active maintenance." },
+    "exp-li4": { es: "<b>Digno Bar:</b> carta digital interactiva desarrollada íntegramente (Angular + .NET). <strong>En producción</strong>, con mantenimiento evolutivo.", en: "<b>Digno Bar:</b> interactive digital menu built end-to-end (Angular + .NET). <strong>In production</strong>, with ongoing enhancements." },
+    "proj-eyebrow": { es: "Proyectos personales", en: "Personal projects" },
+    "proj-h2": { es: "Lo que construí", en: "What I've built" },
+    "proj-seclink": { es: "Ver todo en GitHub →", en: "See it all on GitHub →" },
+    "badge-auxilio": { es: "● En producción", en: "● In production" },
+    "badge-v1": { es: "● v1 en vivo", en: "● v1 live" },
+    "p-auxilio": { es: "Sistema de gestión para una empresa de auxilio mecánico y remolque que opera con compañías de seguros y asistencias internacionales. Administra clientes, servicios y la operación diaria de una flota.", en: "Management system for a roadside-assistance and towing company that works with insurers and international assistance providers. Handles clients, service requests, and the daily operation of a vehicle fleet." },
+    "link-capturas": { es: "Ver capturas →", en: "View screenshots →" },
+    "p-edith": { es: "Asistente virtual con voz propia. Diseñé el pipeline de IA completo — Whisper para transcribir, Gemini para razonar y responder, Playwright para ejecutar acciones en el navegador — y el sistema de memoria conversacional en PostgreSQL para que recuerde contexto entre sesiones. PWA instalable.", en: "Personal voice assistant. I designed the full AI pipeline — Whisper for transcription, Gemini for reasoning and responses, Playwright for executing actions in the browser — plus the PostgreSQL-backed memory system so it keeps context across sessions. Installable PWA." },
+    "live-now": { es: "En vivo ahora", en: "Live now" },
+    "cold-note": { es: "⏱ Primera carga lenta: el servidor gratuito puede tardar hasta 1 min en despertar.", en: "⏱ Slow first load: the free-tier server can take up to 1 min to wake up." },
+    "link-demo": { es: "Ver demo en vivo →", en: "View live demo →" },
+    "h3-crm": { es: "CRM para agencia de viajes", en: "Travel Agency CRM" },
+    "p-crm": { es: "Gestión comercial para agencia de turismo: destinos, paquetes, pasajeros y reservas, con modelado relacional propio.", en: "Sales management tool for a travel agency: destinations, packages, travelers, and bookings, with custom relational modeling." },
+    "h3-bar": { es: "Sistema de Gestión para Bar", en: "Bar Management System" },
+    "p-bar": { es: "Sistema multi-rol (mozo, cocina, barra, caja) con pedidos en tiempo real, descuento automático de stock por receta y permisos por rol con Row Level Security.", en: "Multi-role system (waiter, kitchen, bar, register) with real-time orders, automatic stock deduction by recipe, and role-based permissions via Row Level Security." },
+    "cold-note-bar": { es: '👤 Al entrar, usá el botón "Ver demo": accede con una cuenta de ejemplo, sin necesidad de pedir usuario ni contraseña.', en: '👤 Once inside, use the "View demo" button: it logs in with a sample account, no username or password needed.' },
+    "p-promoya": { es: "App que centraliza promociones por rubro en Rosario. Diseñé un bot diario que combina búsqueda web con un LLM para extraer y estructurar los datos de las promos automáticamente, en vez de scraping rígido por sitio. Desplegado con presupuesto $0.", en: "App that centralizes retail promotions in Rosario by category. I designed a daily bot that combines web search with an LLM to extract and structure promo data automatically, instead of brittle per-site scraping. Deployed on a $0 budget." },
+    "edu-eyebrow": { es: "Formación", en: "Education" },
+    "edu-h2": { es: "Estudios", en: "Education" },
+    "edu1-h4": { es: "Curso Full Stack Intensivo", en: "Intensive Full Stack Course" },
+    "edu1-meta": { es: "2022 · 6 meses", en: "2022 · 6 months" },
+    "edu2-h4": { es: "Secundario completo", en: "High school diploma" },
+    "edu2-sub": { es: "Bachiller en Turismo, Escuela Normal N° 2", en: "Tourism track, Escuela Normal N° 2" },
+    "lang1": { es: "Español nativo", en: "Native Spanish" },
+    "lang2": { es: "Inglés: lectura técnica", en: "English: technical reading" },
+    "lang3": { es: "Licencia de conducir B1", en: "Driver's license B1" },
+    "contact-h2": { es: "¿Hablamos?", en: "Let's talk?" },
+    "contact-p": { es: "Estoy disponible para oportunidades o proyectos que quieras realizar.", en: "I'm available for opportunities or projects you'd like to build." },
+    "contact-btn-email": { es: "Escribime ↗", en: "Message me ↗" }
+  };
+
+  function setLang(lang) {
+    document.getElementById("html-root").lang = lang;
+    document.getElementById("html-root").setAttribute("data-lang", lang);
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      var key = el.getAttribute("data-i18n");
+      var entry = I18N[key];
+      if (entry && entry[lang] !== undefined) el.innerHTML = entry[lang];
+    });
+    document.getElementById("lang-es").classList.toggle("active", lang === "es");
+    document.getElementById("lang-en").classList.toggle("active", lang === "en");
+    var cvBtn = document.getElementById("cv-download");
+    cvBtn.href = lang === "en" ? "cv-nicolas-zanini-en.pdf" : "cv-nicolas-zanini.pdf";
+    try { localStorage.setItem("lang", lang); } catch (e) {}
+    CURRENT_LANG = lang;
+  }
+
+  var CURRENT_LANG = "es";
+  document.getElementById("lang-es").addEventListener("click", function () { setLang("es"); });
+  document.getElementById("lang-en").addEventListener("click", function () { setLang("en"); });
+  (function initLang() {
+    var saved = "es";
+    try { saved = localStorage.getItem("lang") || "es"; } catch (e) {}
+    if (saved === "en") setLang("en");
+  })();
+
   var CONTACT_EMAIL = "nicolas_zanini@hotmail.com";
   var WHATSAPP_NUMBER = "5493416876713";
 
@@ -560,21 +677,26 @@
   document.getElementById("modal-backdrop").addEventListener("click", function (e) { if (e.target === this) closeModal(); });
   document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeModal(); });
 
+  var EMAIL_MODAL_T = {
+    es: { title: "Escribime", intro: "Esta es mi dirección, copiala o abrila directo en tu correo.", copy: "Copiar", copied: "Copiado", open: "Abrir en mi mail ↗" },
+    en: { title: "Email me", intro: "Here's my address — copy it or open it directly in your mail app.", copy: "Copy", copied: "Copied", open: "Open in my mail ↗" }
+  };
   function openEmailModal() {
-    document.getElementById("modal-title").textContent = "Escribime";
+    var t = EMAIL_MODAL_T[CURRENT_LANG] || EMAIL_MODAL_T.es;
+    document.getElementById("modal-title").textContent = t.title;
     var body = document.getElementById("modal-body");
     body.innerHTML =
       '<div style="display:flex;flex-direction:column;gap:16px;">' +
-        '<p style="color:var(--muted);margin:0;font-size:13.5px;">Esta es mi dirección, copiala o abrila directo en tu correo.</p>' +
+        '<p style="color:var(--muted);margin:0;font-size:13.5px;">' + t.intro + '</p>' +
         '<div class="email-copy-row">' +
           '<span class="email-value">' + CONTACT_EMAIL + "</span>" +
-          '<button id="em-copy" class="email-copy-btn" type="button" aria-label="Copiar dirección de email">Copiar</button>' +
+          '<button id="em-copy" class="email-copy-btn" type="button" aria-label="' + t.copy + '">' + t.copy + '</button>' +
         "</div>" +
-        '<a class="btn-primary" style="text-decoration:none;justify-content:center;" href="mailto:' + CONTACT_EMAIL + '" target="_blank" rel="noopener">Abrir en mi mail ↗</a>' +
+        '<a class="btn-primary" style="text-decoration:none;justify-content:center;" href="mailto:' + CONTACT_EMAIL + '" target="_blank" rel="noopener">' + t.open + '</a>' +
       "</div>";
     document.getElementById("em-copy").addEventListener("click", function () {
       var self = this;
-      function done() { self.textContent = "Copiado"; setTimeout(function () { self.textContent = "Copiar"; }, 1500); }
+      function done() { self.textContent = t.copied; setTimeout(function () { self.textContent = t.copy; }, 1500); }
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(CONTACT_EMAIL).then(done).catch(done);
       } else { done(); }
@@ -586,7 +708,12 @@
 
   var AUXILIO_SCREENSHOTS = ["assets/auxilio-1.jpg", "assets/auxilio-2.jpg", "assets/auxilio-3.jpg", "assets/auxilio-4.jpg"];
 
+  var AUXILIO_MODAL_T = {
+    es: { note: "Capturas con datos de prueba cargados por mí, no son clientes reales.", trial: "Sistema en producción para un cliente real; por confidencialidad no tiene demo pública. Si querés, te lo muestro funcionando en una videollamada." },
+    en: { note: "Screenshots use test data I loaded myself, not real client data.", trial: "This system is in production for a real client, so it has no public demo for confidentiality reasons. Happy to walk you through it live on a call." }
+  };
   function openAuxilioModal() {
+    var t = AUXILIO_MODAL_T[CURRENT_LANG] || AUXILIO_MODAL_T.es;
     document.getElementById("modal-title").textContent = "Auxilio Express";
     var body = document.getElementById("modal-body");
     body.innerHTML =
@@ -597,9 +724,9 @@
           '<button class="gallery-arrow next" id="gallery-next" type="button" aria-label="Siguiente">›</button>' +
         "</div>" +
         '<div class="gallery-dots" id="gallery-dots"></div>' +
-        '<p class="gallery-note">Capturas con datos de prueba cargados por mí, no son clientes reales.</p>' +
+        '<p class="gallery-note">' + t.note + '</p>' +
       "</div>" +
-      '<p class="modal-trial-note" style="margin-top:14px;">Sistema en producción para un cliente real; por confidencialidad no tiene demo pública. Si querés, te lo muestro funcionando en una videollamada.</p>';
+      '<p class="modal-trial-note" style="margin-top:14px;">' + t.trial + '</p>';
 
     var idx = 0;
     var imgEl = document.getElementById("gallery-img");
